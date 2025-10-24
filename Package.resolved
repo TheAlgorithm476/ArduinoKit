@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "coreavr",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pdshelley/CoreAVR.git",
+      "state" : {
+        "branch" : "develop",
+        "revision" : "e198e55a0292229febe53f6c17ccf2361cc4d2f9"
+      }
+    }
+  ],
+  "version" : 2
+}
