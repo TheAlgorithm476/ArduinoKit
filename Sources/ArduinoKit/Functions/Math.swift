@@ -10,7 +10,7 @@
 /// Calculates the absolute value of a number.
 ///
 /// - Parameters:
-///   - x: The number
+/// - x: The number
 /// - Returns: `x` if `x` is greater than 0, `-x` otherwise.
 @inlinable
 @inline(__always)
@@ -23,9 +23,9 @@ public func abs<T: SignedNumeric>(x: T) -> T {
 /// Constrains a number to be within a range.
 ///
 /// - Parameters:
-///   - amount: The number to constrain
-///   - min: The lower bound of the range
-///   - max: The upper bound of the range
+/// - amount: The number to constrain
+/// - min: The lower bound of the range
+/// - max: The upper bound of the range
 /// - Returns: If amount if lower than `min`: min; if higher than `max`: max; `amount` otherwise.
 @inlinable
 @inline(__always)
@@ -40,11 +40,11 @@ public func constrain<T: Comparable>(amount: T, min: T, max: T) -> T {
 /// Does not constrain values to within the range, because out-of-range values are sometimes intended and useful. The `constrain()` function may be used either before or after this function, if limits to the ranges are desired.
 ///
 /// - Parameters:
-///   - input: The number to map
-///   - minInput: The lower bound of the value's current range
-///   - maxInput: The upper bound of the value's current range
-///   - minOutput: The lower bound of the value's target range
-///   - maxOutput: The upper bound of the value's target range
+/// - input: The number to map
+/// - minInput: The lower bound of the value's current range
+/// - maxInput: The upper bound of the value's current range
+/// - minOutput: The lower bound of the value's target range
+/// - maxOutput: The upper bound of the value's target range
 /// - Returns: The mapped value.
 @inlinable
 @inline(__always)
@@ -59,11 +59,11 @@ public func map<T: BinaryInteger>(input: T, minInput: T, maxInput: T, minOutput:
 /// Does not constrain values to within the range, because out-of-range values are sometimes intended and useful. The `constrain()` function may be used either before or after this function, if limits to the ranges are desired.
 ///
 /// - Parameters:
-///   - input: The number to map
-///   - minInput: The lower bound of the value's current range
-///   - maxInput: The upper bound of the value's current range
-///   - minOutput: The lower bound of the value's target range
-///   - maxOutput: The upper bound of the value's target range
+/// - input: The number to map
+/// - minInput: The lower bound of the value's current range
+/// - maxInput: The upper bound of the value's current range
+/// - minOutput: The lower bound of the value's target range
+/// - maxOutput: The upper bound of the value's target range
 /// - Returns: The mapped value.
 @inlinable
 @inline(__always)
@@ -76,8 +76,8 @@ public func map<T: FloatingPoint>(input: T, minInput: T, maxInput: T, minOutput:
 /// Calculates the minimum of two numbers.
 ///
 /// - Parameters:
-///   - a: The first number
-///   - b: The second number
+/// - a: The first number
+/// - b: The second number
 /// - Returns: The smaller of the 2 values
 @inlinable
 @inline(__always)
@@ -90,8 +90,8 @@ public func min<T: Comparable>(a: T, b: T) -> T {
 /// Calculates the maximum of two numbers.
 ///
 /// - Parameters:
-///   - a: The first number
-///   - b: The second number
+/// - a: The first number
+/// - b: The second number
 /// - Returns: The larger of the 2 values
 @inlinable
 @inline(__always)
@@ -106,7 +106,7 @@ public func max<T: Comparable>(a: T, b: T) -> T {
 /// Calculates the square of a number: the number multiplied by itself.
 ///
 /// - Parameters:
-///   - x: the number
+/// - x: the number
 /// - Returns: The square of the number.
 @inlinable
 @inline(__always)
