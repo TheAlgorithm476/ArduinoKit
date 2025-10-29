@@ -1,5 +1,6 @@
 files:
 - main.swift
+- Sources/ArduinoKit/Functions/Bits.swift
 - Sources/ArduinoKit/Functions/Math.swift
 - Sources/ArduinoKit/Constants.swift
 - Package.swift

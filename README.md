@@ -23,13 +23,13 @@ Support Status Legend:
 | Functions - Analog IO              | `analogReference`       | ❌      |                                                       |
 | Functions - Analog IO              | `analogWrite`           | ❌      |                                                       |
 | Functions - Analog IO              | `analogWriteResolution` | ❌      |                                                       |
-| Functions - Bits and Bytes         | `bit`                   | ❌      |                                                       |
-| Functions - Bits and Bytes         | `bitClear`              | ❌      |                                                       |
-| Functions - Bits and Bytes         | `bitRead`               | ❌      |                                                       |
-| Functions - Bits and Bytes         | `bitSet`                | ❌      |                                                       |
-| Functions - Bits and Bytes         | `bitWrite`              | ❌      |                                                       |
-| Functions - Bits and Bytes         | `highByte`              | ❌      |                                                       |
-| Functions - Bits and Bytes         | `lowByte`               | ❌      |                                                       |
+| Functions - Bits and Bytes         | `bit`                   | ✅      |                                                       |
+| Functions - Bits and Bytes         | `bitClear`              | ✅      |                                                       |
+| Functions - Bits and Bytes         | `bitRead`               | ✅      |                                                       |
+| Functions - Bits and Bytes         | `bitSet`                | ✅      |                                                       |
+| Functions - Bits and Bytes         | `bitWrite`              | ✅      |                                                       |
+| Functions - Bits and Bytes         | `highByte`              | ✅      |                                                       |
+| Functions - Bits and Bytes         | `lowByte`               | ✅      |                                                       |
 | Functions - Characters             | `isAlpha`               | ❌      |                                                       |
 | Functions - Characters             | `isAlphaNumeric`        | ❌      |                                                       |
 | Functions - Characters             | `isAscii`               | ❌      |                                                       |
