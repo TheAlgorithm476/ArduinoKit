@@ -15,6 +15,7 @@ import CoreAVR
 /// If you don't know why you're enabling them, you probably don't need them, and should leave them disabled.
 @inlinable
 @inline(__always)
+@available(*, deprecated, message: "Use CoreAVR's builtin `Interrupts.enableInterrupts` function instead.")
 func interrupts() {
     Interrupts.enableInterrupts()
 }
@@ -27,6 +28,7 @@ func interrupts() {
 /// If you don't know why you're enabling them, you probably don't need them, and should leave them disabled.
 @inlinable
 @inline(__always)
+@available(*, deprecated, message: "Use CoreAVR's builtin `Interrupts.disableInterrupts` function instead.")
 func noInterrupts() {
     Interrupts.disableInterrupts()
 }
