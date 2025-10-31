@@ -30,18 +30,18 @@ Support Status Legend:
 | Functions - Bits and Bytes         | `bitWrite`              | ✅      |                                                                             |
 | Functions - Bits and Bytes         | `highByte`              | ✅      |                                                                             |
 | Functions - Bits and Bytes         | `lowByte`               | ✅      |                                                                             |
-| Functions - Characters             | `isAlpha`               | ✅      | Deprecated. Use Swift's builtin `Character.isLetter` property instead.      |
+| Functions - Characters             | `isAlpha`               | ✅      |                                                                             |
 | Functions - Characters             | `isAlphaNumeric`        | ✅      |                                                                             |
-| Functions - Characters             | `isAscii`               | ✅      | Deprecated. Use Swift's builtin `Character.isASCII` property instead.       |
-| Functions - Characters             | `isControl`             | ✅      | Only works for ASCII characters.                                            |
-| Functions - Characters             | `isDigit`               | ✅      | Deprecated. Use Swift's builtin `Character.isNumber` property instead.      |
+| Functions - Characters             | `isAscii`               | ✅      |                                                                             |
+| Functions - Characters             | `isControl`             | ✅      |                                                                             |
+| Functions - Characters             | `isDigit`               | ✅      |                                                                             |
 | Functions - Characters             | `isGraph`               | ✅      |                                                                             |
-| Functions - Characters             | `isHexadecimalDigit`    | ✅      | Deprecated. Use Swift's builtin `Character.isHexDigit` property instead.    |
-| Functions - Characters             | `isLowerCase`           | ✅      | Deprecated. Use Swift's builtin `Character.isLowercase` property instead.   |
+| Functions - Characters             | `isHexadecimalDigit`    | ✅      |                                                                             |
+| Functions - Characters             | `isLowerCase`           | ✅      |                                                                             |
 | Functions - Characters             | `isPrintable`           | ✅      |                                                                             |
-| Functions - Characters             | `isPunct`               | ✅      | Deprecated. Use Swift's builtin `Character.isPunctuation` property instead. |
-| Functions - Characters             | `isSpace`               | ✅      | Deprecated. Use Swift's builtin `Character.isWhitespace` property instead.  |
-| Functions - Characters             | `isUpperCase`           | ✅      | Deprecated. Use Swift's builtin `Character.isUppercase` property instead.   |
+| Functions - Characters             | `isPunct`               | ✅      |                                                                             |
+| Functions - Characters             | `isSpace`               | ✅      |                                                                             |
+| Functions - Characters             | `isUpperCase`           | ✅      |                                                                             |
 | Functions - Characters             | `isWhitespace`          | ✅      |                                                                             |
 | Functions - Communication          | `Print`                 | ❌      |                                                                             |
 | Functions - Communication          | `SPI`                   | ❌      |                                                                             |

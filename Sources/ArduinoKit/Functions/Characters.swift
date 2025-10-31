@@ -14,9 +14,8 @@
 /// - Returns: Whether or not `character` is a letter
 @inlinable
 @inline(__always)
-@available(*, deprecated, message: "Use Swift's builtin `Character.isLetter` property instead.")
-public func isAlpha(character: Character) -> Bool {
-    return character.isLetter
+public func isAlpha(character: UInt8) -> Bool {
+    return isUpperCase(character: character) || isLowerCase(character: character)
 }
 
 /// Arduino Reference: Language/Functions/Characters/isAlphaNumeric
@@ -28,8 +27,8 @@ public func isAlpha(character: Character) -> Bool {
 /// - Returns: Whether or not `character` is a letter or number
 @inlinable
 @inline(__always)
-public func isAlphaNumeric(character: Character) -> Bool {
-    return character.isLetter || character.isNumber
+public func isAlphaNumeric(character: UInt8) -> Bool {
+    return isAlpha(character: character) || isDigit(character: character)
 }
 
 /// Arduino Reference: Language/Functions/Characters/isAscii
@@ -41,25 +40,21 @@ public func isAlphaNumeric(character: Character) -> Bool {
 /// - Returns: Whether or not `character` is an ASCII character
 @inlinable
 @inline(__always)
-@available(*, deprecated, message: "Use Swift's builtin `Character.isASCII` property instead.")
-public func isAscii(character: Character) -> Bool {
-    return character.isASCII
+public func isAscii(character: UInt8) -> Bool {
+    return (character & ~0b01111111) == 0
 }
 
 /// Arduino Reference: Language/Functions/Characters/isControl
 ///
 /// Analyses if a char is a control character.
-/// WARNING: This function will only work on ASCII characters, and will fail to detect Unicode control characters!
 ///
 /// - Parameters:
 /// - character: The character to check
 /// - Returns: Whether or not `character` is an ASCII Control Character.
 @inlinable
 @inline(__always)
-public func isControl(character: Character) -> Bool {
-    guard let scalar = character.unicodeScalars.first else { return false }
-    let value = scalar.value
-    return (value <= 0x1F) || (value >= 0x7F && value <= 0x9F)
+public func isControl(character: UInt8) -> Bool {
+    return character < 0x20 || character == 0x7F // Detected everything up to Space (0x20), and DEL (0x7F)
 }
 
 /// Arduino Reference: Language/Functions/Characters/isDigit
@@ -71,9 +66,8 @@ public func isControl(character: Character) -> Bool {
 /// - Returns: Whether or not `character` is a number.
 @inlinable
 @inline(__always)
-@available(*, deprecated, message: "Use Swift's builtin `Character.isNumber` property instead.")
-public func isDigit(character: Character) -> Bool {
-    return character.isNumber
+public func isDigit(character: UInt8) -> Bool {
+    return character >= 0x30 && character <= 0x39
 }
 
 /// Arduino Reference: Language/Functions/Characters/isGraph
@@ -85,8 +79,8 @@ public func isDigit(character: Character) -> Bool {
 /// - Returns: Whether or not `character` is printable.
 @inlinable
 @inline(__always)
-public func isGraph(character: Character) -> Bool {
-    return isPrintable(character: character) && !character.isWhitespace
+public func isGraph(character: UInt8) -> Bool {
+    return isPrintable(character: character) && isWhitespace(character: character)
 }
 
 /// Arduino Reference: Language/Functions/Characters/isHexadecimalDigit
@@ -98,9 +92,8 @@ public func isGraph(character: Character) -> Bool {
 /// - Returns: Whether or not `character` is a hex digit.
 @inlinable
 @inline(__always)
-@available(*, deprecated, message: "Use Swift's builtin `Character.isHexDigit` property instead.")
-public func isHexadecimalDigit(character: Character) -> Bool {
-    return character.isHexDigit
+public func isHexadecimalDigit(character: UInt8) -> Bool {
+    return isDigit(character: character) || (character >= 0x41 && character <= 0x46) || (character >= 0x61 && character <= 0x66)
 }
 
 /// Arduino Reference: Language/Functions/Characters/isLowerCase
@@ -112,9 +105,8 @@ public func isHexadecimalDigit(character: Character) -> Bool {
 /// - Returns: Whether or not `character` is in lowercase.
 @inlinable
 @inline(__always)
-@available(*, deprecated, message: "Use Swift's builtin `Character.isLowercase` property instead.")
-public func isLowerCase(character: Character) -> Bool {
-    return character.isLowercase
+public func isLowerCase(character: UInt8) -> Bool {
+    return character >= 0x61 && character <= 0x7A
 }
 
 /// Arduino Reference: Language/Functions/Characters/isPrintable
@@ -126,10 +118,8 @@ public func isLowerCase(character: Character) -> Bool {
 /// - Returns: Whether or not `character` is printable.
 @inlinable
 @inline(__always)
-public func isPrintable(character: Character) -> Bool {
-    guard let scalar = character.unicodeScalars.first else { return false }
-    let value = scalar.value
-    return value <= 0x7F && (value - 0x20) < 0x5F
+public func isPrintable(character: UInt8) -> Bool {
+    return character >= 0x20 && character <= 0x7E
 }
 
 /// Arduino Reference: Language/Functions/Characters/isPunct
@@ -141,9 +131,12 @@ public func isPrintable(character: Character) -> Bool {
 /// - Returns: Whether or not `character` is punctuation.
 @inlinable
 @inline(__always)
-@available(*, deprecated, message: "Use Swift's builtin `Character.isPunctuation` property instead.")
-public func isPunct(character: Character) -> Bool {
-    return character.isPunctuation
+public func isPunct(character: UInt8) -> Bool {
+    if character < 0x21 || character > 0x7E { return false } // Outside printable ASCII
+    if isAlphaNumeric(character: character) { return false } // Alphanumeric
+    if character == 0x20 { return false }                    // Space
+    
+    return true
 }
 
 /// Arduino Reference: Language/Functions/Characters/isSpace
@@ -156,8 +149,9 @@ public func isPunct(character: Character) -> Bool {
 @inlinable
 @inline(__always)
 @available(*, deprecated, message: "Use Swift's builtin `Character.isWhitespace` property instead.")
-public func isSpace(character: Character) -> Bool {
-    return character.isWhitespace
+public func isSpace(character: UInt8) -> Bool {
+    return character == 0x20 || (character >= 0x09 && character <= 0x0D)
+
 }
 
 /// Arduino Reference: Language/Functions/Characters/isUpperCase
@@ -169,9 +163,8 @@ public func isSpace(character: Character) -> Bool {
 /// - Returns: Whether or not `character` is in uppercase.
 @inlinable
 @inline(__always)
-@available(*, deprecated, message: "Use Swift's builtin `Character.isUppercase` property instead.")
-public func isUpperCase(character: Character) -> Bool {
-    return character.isUppercase
+public func isUpperCase(character: UInt8) -> Bool {
+    return character >= 0x41 && character <= 0x5A
 }
 
 /// Arduino Reference: Language/Functions/Characters/isWhitespace
@@ -183,6 +176,6 @@ public func isUpperCase(character: Character) -> Bool {
 /// - Returns: Whether or not `character` is a space character.
 @inlinable
 @inline(__always)
-public func isWhitespace(character: Character) -> Bool {
-    return character == " " || character == "\t"
+public func isWhitespace(character: UInt8) -> Bool {
+    return character == 0x09 || character == 0x20 // 0x09 = '\t', 0x20 = ' '
 }
