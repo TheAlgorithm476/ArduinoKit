@@ -4,6 +4,7 @@ files:
 - Sources/ArduinoKit/Functions/Characters.swift
 - Sources/ArduinoKit/Functions/Interrupts.swift
 - Sources/ArduinoKit/Functions/Math.swift
+- Sources/ArduinoKit/Functions/Random.swift
 - Sources/ArduinoKit/Constants.swift
 - Package.swift
 settings:
