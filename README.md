@@ -124,8 +124,8 @@ Support Status Legend:
 | Functions - Math                   | `pow`                   | ❌      |                                                                                    |
 | Functions - Math                   | `sq`                    | ✅      |                                                                                    |
 | Functions - Math                   | `sqrt`                  | ❌      |                                                                                    |
-| Functions - Random Numbers         | `random`                | ❌      |                                                                                    |
-| Functions - Random Numbers         | `randomSeed`            | ❌      |                                                                                    |
+| Functions - Random Numbers         | `random`                | ✅      |                                                                                    |
+| Functions - Random Numbers         | `randomSeed`            | ✅      |                                                                                    |
 | Functions - Time                   | `delay`                 | ❌      |                                                                                    |
 | Functions - Time                   | `delayMicroseconds`     | ❌      |                                                                                    |
 | Functions - Time                   | `micros`                | ❌      |                                                                                    |
