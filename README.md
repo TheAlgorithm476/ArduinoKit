@@ -2,6 +2,8 @@
 
 The goal of this library is to be a Swift implementation of the Arduino Language, built on top of [CoreAVR](https://github.com/pdshelley/CoreAVR).
 
+ArduinoKit supports microcontrollers using the AVR Architecture, more specifically the ATmega328P. Support for other AVR-based microcontrollers might be added as CoreAVR and ArduinoKit mature.
+
 ## Status
 Support Status Legend:
 | Symbol |              Meaning              |
