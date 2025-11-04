@@ -16,6 +16,7 @@ private var next: UInt32 = 1
 ///
 /// - Parameters:
 /// - seed: non-zero number to initialize the pseudo-random sequence.
+@available(*, deprecated, message: "Use `random(seed: UInt32, max: UInt32, min: UInt32)` instead.")
 public func randomSeed(seed: UInt32) {
     if seed != 0 {
         next = seed
@@ -26,8 +27,32 @@ public func randomSeed(seed: UInt32) {
 ///
 /// The random function generates pseudo-random numbers.
 ///
-/// - Returns: A random number between 0 (inclusive) and 4.294.967.295 (exclusive)
-public func random() -> UInt32 {
+/// - Parameters:
+/// - min: The lower bound of the random value, inclusive
+/// - max: The upper bound of the random value, exclusive
+/// - Returns: A random number between `min` (inclusive) and `max` (exclusive)
+@available(*, deprecated, message: "Use `random(seed: UInt32, max: UInt32, min: UInt32)` instead.")
+func random(min: UInt32, max: UInt32) -> UInt32 {
+    return random(min: min, max: max)
+}
+
+/// Generates a pseudo-random number.
+///
+/// - Parameters:
+/// - seed: An optional seed for the generator. If empty, it will default to the last generated number.
+/// - min: The lower bound of the random value, inclusive
+/// - max: The upper bound of the random value, exclusive
+/// - Returns: A random number between `min` (inclusive) and `max` (exclusive)
+func random(seed: UInt32? = nil, min: UInt32 = 0, max: UInt32 = UInt32.max) -> UInt32 {
+    if let seed = seed {
+        if seed != 0 { next = seed }
+    }
+    
+    guard min <= max else { return min }
+    guard max > 0 else { return 0 }
+    
+    let difference = max - min
+    
     // Algorithm:
     // Compute x = (7^5 * x) mod (2^31 - 1)
     // without overflowing 31 bits:
@@ -44,32 +69,5 @@ public func random() -> UInt32 {
     x = 16807 * low - 2836 * high
     
     next = x % (RANDOM_MAX + 1)
-    return next
-}
-
-/// Arduino Reference: Language/Functions/Random Numbers/random
-///
-/// The random function generates pseudo-random numbers.
-///
-/// - Parameters:
-/// - max: The upper bound of the random value, exclusive
-/// - Returns: A random number between 0 (inclusive) and `max` (exclusive)
-public func random(max: UInt32) -> UInt32 {
-    guard max > 0 else { return 0 }
-    return random() % max
-}
-
-/// Arduino Reference: Language/Functions/Random Numbers/random
-///
-/// The random function generates pseudo-random numbers.
-///
-/// - Parameters:
-/// - min: The lower bound of the random value, inclusive
-/// - max: The upper bound of the random value, exclusive
-/// - Returns: A random number between `min` (inclusive) and `max` (exclusive)
-public func random(min: UInt32, max: UInt32) -> UInt32 {
-    guard min <= max else { return min }
-    let difference = max - min
-    
-    return random(max: difference) + min
+    return (next % difference) + min
 }
