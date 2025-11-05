@@ -109,6 +109,9 @@ public enum SerialConfig: UInt8 {
 ///
 /// To use these extra serial ports to communicate with your personal computer, you will need an additional USB-to-serial adapter, as they are not connected to the Mega's USB-to-serial adapter. To use them to communicate with an external TTL serial device, connect the TX pin to your device's RX pin, the RX to your device's TX pin, and the ground of your Mega to your device's ground.
 public struct Serial: Stream {
+    @usableFromInline
+    internal static var written: Bool = false // Has any byte been written to UART since `begin()`?
+    
     // TODO: Parity with ArduinoCore.
     /// Arduino Reference: Language/Functions/Communication/Serial/begin
     ///
@@ -117,12 +120,42 @@ public struct Serial: Stream {
     /// An optional second argument configures the data, parity, and stop bits. The default is 8 data bits, no parity, one stop bit.
     ///
     /// - Parameters:
-    /// - baudRate: The data rate in bits per second
+    /// - speed: The data rate in bits per second
+    /// - config: Sets data, parity, and stop bits.
     @inlinable
     @inline(__always)
-    public static func begin(baudRate: UInt32 = 57600) {
-        uart0.baudRate = 57600
-        uart0.transmitterEnable = .on
+    @available(*, deprecated, message: "Use Serial.begin(speed: UInt32, config: SerialConfig) instead.")
+    public static func begin(baud: UInt32, config: UInt8 = SERIAL_8N1) {
+        Self.begin(speed: baud, config: .init(rawValue: config) ?? .config8N1)
+    }
+    
+    /// Sets the data rate in bits per second (baud) for serial data transmission.
+    ///
+    /// An optional second argument configures the data, parity, and stop bits. The default is 8 data bits, no parity, one stop bit.
+    ///
+    /// - Parameters:
+    /// - speed: The data rate in bits per second
+    /// - config: Sets data, parity, and stop bits.
+    @inlinable
+    @inline(__always)
+    public static func begin(speed: UInt32 = 57600, config: SerialConfig = .config8N1) {
+        var baudSetting: UInt16 = UInt16((UInt32(cpuFrequency) / 4 / speed - 1) / 2)
+        uart0.asynchronousDoubleSpeedMode = .on
+        
+        if UInt32(cpuFrequency) == 16000000 && speed == 57600 && baudSetting > 4095 {
+            uart0.asynchronousDoubleSpeedMode = .off
+            baudSetting = UInt16((UInt32(cpuFrequency) / 8 / speed - 1) / 2)
+        }
+        
+        uart0.baudRateRegister = baudSetting
+        
+        Self.written = false
+        
+        uart0.USARTControlAndStatusRegisterC = config.rawValue
+        
         uart0.receiverEnable = .on
+        uart0.transmitterEnable = .on
+        uart0.rxCompleteInterruptEnable = .on
+        uart0.dataRegisterEmptyInterruptEnable = .off
     }
 }

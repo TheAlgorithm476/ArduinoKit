@@ -62,7 +62,7 @@ Support Status Legend:
 | Functions - Communication - SPI    | `usingInterrupt`        | ❌      |                                                                                         |
 | Functions - Communication - Serial | `available`             | ❌      |                                                                                         |
 | Functions - Communication - Serial | `availableForWrite`     | ❌      |                                                                                         |
-| Functions - Communication - Serial | `begin`                 | 🚧      | Works for UART, but is not yet fully spec-compliant.                                    |
+| Functions - Communication - Serial | `begin`                 | ✅      |                                                                                         |
 | Functions - Communication - Serial | `end`                   | ❌      |                                                                                         |
 | Functions - Communication - Serial | `find`                  | ❌      |                                                                                         |
 | Functions - Communication - Serial | `findUntil`             | ❌      |                                                                                         |
