@@ -7,186 +7,80 @@
 
 import CoreAVR
 
-@available(*, deprecated, message: "Use SerialParity.even instead.")
-public let SERIAL_PARITY_EVEN:  UInt16 = 0x1
-@available(*, deprecated, message: "Use SerialParity.odd instead.")
-public let SERIAL_PARITY_ODD:   UInt16 = 0x2
-@available(*, deprecated, message: "Use SerialParity.none instead.")
-public let SERIAL_PARITY_NONE:  UInt16 = 0x3
-@available(*, deprecated, message: "Use SerialParity.mark instead.")
-public let SERIAL_PARITY_MARK:  UInt16 = 0x4
-@available(*, deprecated, message: "Use SerialParity.space instead.")
-public let SERIAL_PARITY_SPACE: UInt16 = 0x5
-@available(*, deprecated, message: "Use SerialParity.mask instead.")
-public let SERIAL_PARITY_MASK:  UInt16 = 0xF
-
-public enum SerialParity: UInt16 {
-    case even  = 0x1
-    case odd   = 0x2
-    case none  = 0x3
-    case mark  = 0x4
-    case space = 0x5
-    case mask  = 0xF
-}
-
-@available(*, deprecated, message: "Use SerialStopBit.bit1 instead.")
-public let SERIAL_STOP_BIT_1:    UInt16 = 0x10
-@available(*, deprecated, message: "Use SerialStopBit.bit15 instead.")
-public let SERIAL_STOP_BIT_1_5:  UInt16 = 0x20
-@available(*, deprecated, message: "Use SerialStopBit.bit2 instead.")
-public let SERIAL_STOP_BIT_2:    UInt16 = 0x30
-@available(*, deprecated, message: "Use SerialStopBit.mask instead.")
-public let SERIAL_STOP_BIT_MASK: UInt16 = 0xF0
-
-public enum SerialStopBit: UInt16 {
-    case bit1  = 0x10
-    case bit15 = 0x20
-    case bit2  = 0x30
-    case mask  = 0xF0
-}
-
-@available(*, deprecated, message: "Use SerialData.data5 instead.")
-public let SERIAL_DATA_5:    UInt16 = 0x100
-@available(*, deprecated, message: "Use SerialData.data6 instead.")
-public let SERIAL_DATA_6:    UInt16 = 0x200
-@available(*, deprecated, message: "Use SerialData.data7 instead.")
-public let SERIAL_DATA_7:    UInt16 = 0x300
-@available(*, deprecated, message: "Use SerialData.data8 instead.")
-public let SERIAL_DATA_8:    UInt16 = 0x400
-@available(*, deprecated, message: "Use SerialData.mask instead.")
-public let SERIAL_DATA_MASK: UInt16 = 0xF00
-
-public enum SerialData: UInt16 {
-    case data5 = 0x100
-    case data6 = 0x200
-    case data7 = 0x300
-    case data8 = 0x400
-    case mask  = 0xF00
-}
-
 @available(*, deprecated, message: "Use SerialConfig.config5N1 instead.")
-public let SERIAL_5N1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.none.rawValue  | SerialData.data5.rawValue)
+public let SERIAL_5N1: UInt8 = 0x00
 @available(*, deprecated, message: "Use SerialConfig.config6N1 instead.")
-public let SERIAL_6N1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.none.rawValue  | SerialData.data6.rawValue)
+public let SERIAL_6N1: UInt8 = 0x02
 @available(*, deprecated, message: "Use SerialConfig.config7N1 instead.")
-public let SERIAL_7N1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.none.rawValue  | SerialData.data7.rawValue)
+public let SERIAL_7N1: UInt8 = 0x04
 @available(*, deprecated, message: "Use SerialConfig.config8N1 instead.")
-public let SERIAL_8N1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.none.rawValue  | SerialData.data8.rawValue)
+public let SERIAL_8N1: UInt8 = 0x06
 @available(*, deprecated, message: "Use SerialConfig.config5N2 instead.")
-public let SERIAL_5N2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.none.rawValue  | SerialData.data5.rawValue)
+public let SERIAL_5N2: UInt8 = 0x08
 @available(*, deprecated, message: "Use SerialConfig.config6N2 instead.")
-public let SERIAL_6N2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.none.rawValue  | SerialData.data6.rawValue)
+public let SERIAL_6N2: UInt8 = 0x0A
 @available(*, deprecated, message: "Use SerialConfig.config7N2 instead.")
-public let SERIAL_7N2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.none.rawValue  | SerialData.data7.rawValue)
+public let SERIAL_7N2: UInt8 = 0x0C
 @available(*, deprecated, message: "Use SerialConfig.config8N2 instead.")
-public let SERIAL_8N2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.none.rawValue  | SerialData.data8.rawValue)
+public let SERIAL_8N2: UInt8 = 0x0E
 @available(*, deprecated, message: "Use SerialConfig.config5E1 instead.")
-public let SERIAL_5E1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.even.rawValue  | SerialData.data5.rawValue)
+public let SERIAL_5E1: UInt8 = 0x20
 @available(*, deprecated, message: "Use SerialConfig.config6E1 instead.")
-public let SERIAL_6E1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.even.rawValue  | SerialData.data6.rawValue)
+public let SERIAL_6E1: UInt8 = 0x22
 @available(*, deprecated, message: "Use SerialConfig.config7E1 instead.")
-public let SERIAL_7E1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.even.rawValue  | SerialData.data7.rawValue)
+public let SERIAL_7E1: UInt8 = 0x24
 @available(*, deprecated, message: "Use SerialConfig.config8E1 instead.")
-public let SERIAL_8E1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.even.rawValue  | SerialData.data8.rawValue)
+public let SERIAL_8E1: UInt8 = 0x26
 @available(*, deprecated, message: "Use SerialConfig.config5E2 instead.")
-public let SERIAL_5E2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.even.rawValue  | SerialData.data5.rawValue)
+public let SERIAL_5E2: UInt8 = 0x28
 @available(*, deprecated, message: "Use SerialConfig.config6E2 instead.")
-public let SERIAL_6E2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.even.rawValue  | SerialData.data6.rawValue)
+public let SERIAL_6E2: UInt8 = 0x2A
 @available(*, deprecated, message: "Use SerialConfig.config7E2 instead.")
-public let SERIAL_7E2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.even.rawValue  | SerialData.data7.rawValue)
+public let SERIAL_7E2: UInt8 = 0x2C
 @available(*, deprecated, message: "Use SerialConfig.config8E2 instead.")
-public let SERIAL_8E2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.even.rawValue  | SerialData.data8.rawValue)
+public let SERIAL_8E2: UInt8 = 0x2E
 @available(*, deprecated, message: "Use SerialConfig.config5O1 instead.")
-public let SERIAL_5O1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.odd.rawValue   | SerialData.data5.rawValue)
+public let SERIAL_5O1: UInt8 = 0x30
 @available(*, deprecated, message: "Use SerialConfig.config6O1 instead.")
-public let SERIAL_6O1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.odd.rawValue   | SerialData.data6.rawValue)
+public let SERIAL_6O1: UInt8 = 0x32
 @available(*, deprecated, message: "Use SerialConfig.config7O1 instead.")
-public let SERIAL_7O1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.odd.rawValue   | SerialData.data7.rawValue)
+public let SERIAL_7O1: UInt8 = 0x34
 @available(*, deprecated, message: "Use SerialConfig.config8O1 instead.")
-public let SERIAL_8O1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.odd.rawValue   | SerialData.data8.rawValue)
+public let SERIAL_8O1: UInt8 = 0x36
 @available(*, deprecated, message: "Use SerialConfig.config5O2 instead.")
-public let SERIAL_5O2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.odd.rawValue   | SerialData.data5.rawValue)
+public let SERIAL_5O2: UInt8 = 0x38
 @available(*, deprecated, message: "Use SerialConfig.config6O2 instead.")
-public let SERIAL_6O2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.odd.rawValue   | SerialData.data6.rawValue)
+public let SERIAL_6O2: UInt8 = 0x3A
 @available(*, deprecated, message: "Use SerialConfig.config7O2 instead.")
-public let SERIAL_7O2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.odd.rawValue   | SerialData.data7.rawValue)
+public let SERIAL_7O2: UInt8 = 0x3C
 @available(*, deprecated, message: "Use SerialConfig.config8O2 instead.")
-public let SERIAL_8O2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.odd.rawValue   | SerialData.data8.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config5M1 instead.")
-public let SERIAL_5M1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.mark.rawValue  | SerialData.data5.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config6M1 instead.")
-public let SERIAL_6M1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.mark.rawValue  | SerialData.data6.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config7M1 instead.")
-public let SERIAL_7M1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.mark.rawValue  | SerialData.data7.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config8M1 instead.")
-public let SERIAL_8M1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.mark.rawValue  | SerialData.data8.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config5N2 instead.")
-public let SERIAL_5M2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.mark.rawValue  | SerialData.data5.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config6M2 instead.")
-public let SERIAL_6M2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.mark.rawValue  | SerialData.data6.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config7M2 instead.")
-public let SERIAL_7M2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.mark.rawValue  | SerialData.data7.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config8M2 instead.")
-public let SERIAL_8M2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.mark.rawValue  | SerialData.data8.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config5S1 instead.")
-public let SERIAL_5S1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.space.rawValue | SerialData.data5.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config6S1 instead.")
-public let SERIAL_6S1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.space.rawValue | SerialData.data6.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config7S1 instead.")
-public let SERIAL_7S1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.space.rawValue | SerialData.data7.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config8S1 instead.")
-public let SERIAL_8S1: UInt16 = (SerialStopBit.bit1.rawValue | SerialParity.space.rawValue | SerialData.data8.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config5S2 instead.")
-public let SERIAL_5S2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.space.rawValue | SerialData.data5.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config6S2 instead.")
-public let SERIAL_6S2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.space.rawValue | SerialData.data6.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config7S2 instead.")
-public let SERIAL_7S2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.space.rawValue | SerialData.data7.rawValue)
-@available(*, deprecated, message: "Use SerialConfig.config8S2 instead.")
-public let SERIAL_8S2: UInt16 = (SerialStopBit.bit2.rawValue | SerialParity.space.rawValue | SerialData.data8.rawValue)
+public let SERIAL_8O2: UInt8 = 0x3E
 
-// Swift requires integer literal cases for enums, so no fancy reference.
-public enum SerialConfig: UInt16 {
-    case config5N1 = 0x113
-    case config6N1 = 0x213
-    case config7N1 = 0x313
-    case config8N1 = 0x413
-    case config5N2 = 0x133
-    case config6N2 = 0x233
-    case config7N2 = 0x333
-    case config8N2 = 0x433
-    case config5E1 = 0x111
-    case config6E1 = 0x211
-    case config7E1 = 0x311
-    case config8E1 = 0x411
-    case config5E2 = 0x131
-    case config6E2 = 0x231
-    case config7E2 = 0x331
-    case config8E2 = 0x431
-    case config5O1 = 0x112
-    case config6O1 = 0x212
-    case config7O1 = 0x312
-    case config8O1 = 0x412
-    case config5O2 = 0x132
-    case config6O2 = 0x232
-    case config7O2 = 0x332
-    case config8O2 = 0x432
-    case config5M1 = 0x114
-    case config6M1 = 0x214
-    case config7M1 = 0x314
-    case config8M1 = 0x414
-    case config5M2 = 0x134
-    case config6M2 = 0x234
-    case config7M2 = 0x334
-    case config8M2 = 0x434
-    case config5S1 = 0x115
-    case config6S1 = 0x215
-    case config7S1 = 0x315
-    case config8S1 = 0x415
-    case config5S2 = 0x135
-    case config6S2 = 0x235
-    case config7S2 = 0x335
-    case config8S2 = 0x435
+public enum SerialConfig: UInt8 {
+    case config5N1 = 0x00
+    case config6N1 = 0x02
+    case config7N1 = 0x04
+    case config8N1 = 0x06
+    case config5N2 = 0x08
+    case config6N2 = 0x0A
+    case config7N2 = 0x0C
+    case config8N2 = 0x0E
+    case config5E1 = 0x20
+    case config6E1 = 0x22
+    case config7E1 = 0x24
+    case config8E1 = 0x26
+    case config5E2 = 0x28
+    case config6E2 = 0x2A
+    case config7E2 = 0x2C
+    case config8E2 = 0x2E
+    case config5O1 = 0x30
+    case config6O1 = 0x32
+    case config7O1 = 0x34
+    case config8O1 = 0x36
+    case config5O2 = 0x38
+    case config6O2 = 0x3A
+    case config7O2 = 0x3C
+    case config8O2 = 0x3E
 }
 
 /// Arduino Reference: Language/Functions/Communication/Serial
