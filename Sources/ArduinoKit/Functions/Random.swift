@@ -23,19 +23,6 @@ public func randomSeed(seed: UInt32) {
     }
 }
 
-/// Arduino Reference: Language/Functions/Random Numbers/random
-///
-/// The random function generates pseudo-random numbers.
-///
-/// - Parameters:
-/// - min: The lower bound of the random value, inclusive
-/// - max: The upper bound of the random value, exclusive
-/// - Returns: A random number between `min` (inclusive) and `max` (exclusive)
-@available(*, deprecated, message: "Use `random(seed: UInt32, max: UInt32, min: UInt32)` instead.")
-func random(min: UInt32, max: UInt32) -> UInt32 {
-    return random(min: min, max: max)
-}
-
 /// Generates a pseudo-random number.
 ///
 /// - Parameters:
