@@ -9,6 +9,7 @@ files:
 - Sources/ArduinoKit/Structures/Serial.swift
 - Sources/ArduinoKit/Structures/Stream.swift
 - Sources/ArduinoKit/Constants.swift
+- Sources/ArduinoKit/Utils.swift
 - Package.swift
 settings:
   BUILD_DIR: build

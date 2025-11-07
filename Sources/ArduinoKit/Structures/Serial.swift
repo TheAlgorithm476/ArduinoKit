@@ -110,9 +110,20 @@ public enum SerialConfig: UInt8 {
 /// To use these extra serial ports to communicate with your personal computer, you will need an additional USB-to-serial adapter, as they are not connected to the Mega's USB-to-serial adapter. To use them to communicate with an external TTL serial device, connect the TX pin to your device's RX pin, the RX to your device's TX pin, and the ground of your Mega to your device's ground.
 public struct Serial: Stream {
     @usableFromInline
-    internal static var written: Bool = false // Has any byte been written to UART since `begin()`?
+    internal static let SERIAL_TX_BUFFER_SIZE: UInt8 = 64
+    @usableFromInline
+    internal static let SERIAL_RX_BUFFER_SIZE: UInt8 = 64
     
-    // TODO: Parity with ArduinoCore.
+    @usableFromInline
+    internal static var written: Bool = false // Has any byte been written to UART since `begin()`?
+    @usableFromInline
+    internal static var txBufferHead: UInt8 = 0
+    @usableFromInline
+    internal static var txBufferTail: UInt8 = 0
+    
+    @usableFromInline
+    internal static var txBuffer = ConstantSizeArray<UInt8>(count: Int(SERIAL_TX_BUFFER_SIZE), repeating: 0)
+    
     /// Arduino Reference: Language/Functions/Communication/Serial/begin
     ///
     /// Sets the data rate in bits per second (baud) for serial data transmission.
@@ -157,5 +168,61 @@ public struct Serial: Stream {
         uart0.transmitterEnable = .on
         uart0.rxCompleteInterruptEnable = .on
         uart0.dataRegisterEmptyInterruptEnable = .off
+    }
+    
+    /// Arduino Reference: Language/Functions/Communication/Serial/write
+    ///
+    /// Writes binary data to the serial port. This data is sent as a byte.
+    ///
+    /// - Parameters:
+    /// - character: The ASCII Character to write to the Serial Port.
+    @inlinable
+    @inline(__always)
+    public static func write(character: UInt8) -> UInt8 {
+        Self.written = true
+        
+        if Self.txBufferHead == Self.txBufferTail && uart0.dataRegisterEmpty {
+            atomic {
+                uart0.USARTIODataRegister = character
+                
+                uart0.asynchronousDoubleSpeedMode = .on
+                uart0.txComplete = true
+            }
+            
+            return 1
+        }
+        
+        let i: UInt8 = (Self.txBufferHead + 1) % Self.SERIAL_TX_BUFFER_SIZE
+        
+        while i == Self.txBufferTail {
+            // Slightly deviating from ArduinoCore here, but this setup makes it work without interrupts enabled.
+            dataRegisterEmptyInterruptHandler()
+        }
+        
+        Self.txBuffer[Int(Self.txBufferHead)] = character
+        
+        atomic {
+            Self.txBufferHead = i
+            //uart0.dataRegisterEmptyInterruptEnable = .on
+        }
+        
+        return 1
+    }
+    
+    @inlinable
+    @inline(__always)
+    internal static func dataRegisterEmptyInterruptHandler() {
+        guard uart0.dataRegisterEmpty else { return }
+        
+        let character: UInt8 = Self.txBuffer[Int(Self.txBufferTail)]
+        Self.txBufferTail = (Self.txBufferTail + 1) % Self.SERIAL_TX_BUFFER_SIZE
+        
+        uart0.USARTIODataRegister = character
+        uart0.asynchronousDoubleSpeedMode = .on
+        uart0.txComplete = true
+        
+        if Self.txBufferHead == Self.txBufferTail {
+            uart0.dataRegisterEmptyInterruptEnable = .off
+        }
     }
 }
