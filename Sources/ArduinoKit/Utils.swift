@@ -25,7 +25,9 @@ internal func atomic(block: () -> Void) {
     if interruptsEnabled { Interrupts.enableInterrupts() }
 }
 
-// https://stackoverflow.com/a/62735799
+/// Derived from: StackOverflow - https://stackoverflow.com/a/62735799
+///
+/// Allocates a managed buffer with a fixed size.
 @usableFromInline
 internal class ConstantSizeBuffer<T>: ExpressibleByArrayLiteral {
     @usableFromInline

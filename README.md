@@ -72,8 +72,8 @@ Support Status Legend:
 | Functions - Communication - Serial | `parseFloat`            | ❌      |                                                                                         |
 | Functions - Communication - Serial | `parseInt`              | ❌      |                                                                                         |
 | Functions - Communication - Serial | `peek`                  | ❌      |                                                                                         |
-| Functions - Communication - Serial | `print`                 | ❌      |                                                                                         |
-| Functions - Communication - Serial | `println`               | ❌      |                                                                                         |
+| Functions - Communication - Serial | `print`                 | 🚧      | Only the basic print(StaticString) implementation is available as of now.               |
+| Functions - Communication - Serial | `println`               | 🚧      | Only the basic println(StaticString) implementation is available as of now.             |
 | Functions - Communication - Serial | `read`                  | ❌      |                                                                                         |
 | Functions - Communication - Serial | `readBytes`             | ❌      |                                                                                         |
 | Functions - Communication - Serial | `readBytesUntil`        | ❌      |                                                                                         |

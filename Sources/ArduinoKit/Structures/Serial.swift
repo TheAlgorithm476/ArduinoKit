@@ -215,6 +215,77 @@ public struct Serial: Stream {
         return 1
     }
     
+    /// Arduino Reference: Language/Functions/Communication/Serial/write
+    ///
+    /// Writes binary data to the serial port. This data is sent as a series of bytes.
+    ///
+    /// - Parameters:
+    /// - buffer: The buffer to write to the Serial Port.
+    /// - Returns: The amount of bytes written to Serial.
+    @inlinable
+    @inline(__always)
+    public static func write(buffer: Array<UInt8>) -> UInt8 {
+        var sent: UInt8 = 0
+        for byte in buffer {
+            if write(character: byte) == 1 {
+                sent += 1
+            }
+        }
+        
+        return sent
+    }
+    
+    /// Arduino Reference: Language/Functions/Communication/Serial/write
+    ///
+    /// Writes binary data to the serial port. This data is sent as a string.
+    ///
+    /// - Parameters:
+    /// - string: The buffer to write to the Serial Port.
+    /// - Returns: The amount of bytes written to Serial.
+    @inlinable
+    @inline(__always)
+    public static func write(string: StaticString) -> UInt8 {
+        var sent: UInt8 = 0
+        for character in string {
+            if write(character: character) == 1 {
+                sent += 1
+            }
+        }
+        
+        return sent
+    }
+    
+    /// Arduino Reference: Language/Functions/Communication/Serial/print
+    ///
+    /// Prints data to the serial port as human-readable ASCII text. This command can take many forms.
+    /// Numbers are printed using an ASCII character for each digit.
+    /// Floats are similarly printed as ASCII digits, defaulting to two decimal places.
+    /// Bytes are sent as a single character.
+    /// Characters and strings are sent as-is.
+    ///
+    /// - Parameters:
+    /// - string: The string to print to Serial
+    /// - Returns: The amount of bytes written to Serial.
+    @inlinable
+    @inline(__always)
+    public static func print(_ string: StaticString) -> UInt8 {
+        return Self.write(string: string)
+    }
+    
+    /// Arduino Reference: Language/Functions/Communication/Serial/println
+    ///
+    /// Prints data to the serial port as human-readable ASCII text followed by a line feed (ASCII 10, or '\n'). This command takes the same forms as Serial.print().
+    ///
+    /// - Parameters:
+    /// - string: The string to print to Serial
+    /// - Returns: The amount of bytes written to Serial.
+    @inlinable
+    @inline(__always)
+    public static func println(_ string: StaticString) -> UInt8 {
+        let written = Self.write(string: string)
+        return written + Self.write(character: 0x0A)
+    }
+    
     @usableFromInline
     @inline(never)
     @interruptHandler
