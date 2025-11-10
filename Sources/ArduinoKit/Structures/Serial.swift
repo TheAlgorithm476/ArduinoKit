@@ -122,7 +122,10 @@ public struct Serial: Stream {
     internal static var txBufferTail: UInt8 = 0
     
     @usableFromInline
-    internal static var txBuffer = ConstantSizeArray<UInt8>(count: Int(SERIAL_TX_BUFFER_SIZE), repeating: 0)
+    static var test = Int(64)
+    
+    @usableFromInline
+    internal static var txBuffer = ConstantSizeBuffer<UInt8>(count: Int(SERIAL_TX_BUFFER_SIZE), repeating: 0)
     
     /// Arduino Reference: Language/Functions/Communication/Serial/begin
     ///
@@ -195,25 +198,34 @@ public struct Serial: Stream {
         let i: UInt8 = (Self.txBufferHead + 1) % Self.SERIAL_TX_BUFFER_SIZE
         
         while i == Self.txBufferTail {
-            // Slightly deviating from ArduinoCore here, but this setup makes it work without interrupts enabled.
-            dataRegisterEmptyInterruptHandler()
+            if !cpuCore.globalInterruptEnable {
+                // Interrupts are disabled, poll data flag manually.
+                // If set, pretend an interrupt has happened, and call the handler.
+                dataRegisterEmptyInterruptHandler()
+            }
         }
         
         Self.txBuffer[Int(Self.txBufferHead)] = character
         
         atomic {
             Self.txBufferHead = i
-            //uart0.dataRegisterEmptyInterruptEnable = .on
+            uart0.dataRegisterEmptyInterruptEnable = .on
         }
         
         return 1
     }
     
-    @inlinable
-    @inline(__always)
+    @usableFromInline
+    @inline(never)
+    @interruptHandler
+    @_silgen_name("__vector_18")
+    internal static func receiveCompleteInterruptHandler() {}
+    
+    @usableFromInline
+    @inline(never)
+    @interruptHandler
+    @_silgen_name("__vector_19")
     internal static func dataRegisterEmptyInterruptHandler() {
-        guard uart0.dataRegisterEmpty else { return }
-        
         let character: UInt8 = Self.txBuffer[Int(Self.txBufferTail)]
         Self.txBufferTail = (Self.txBufferTail + 1) % Self.SERIAL_TX_BUFFER_SIZE
         

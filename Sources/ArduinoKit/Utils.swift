@@ -27,7 +27,7 @@ internal func atomic(block: () -> Void) {
 
 // https://stackoverflow.com/a/62735799
 @usableFromInline
-internal class ConstantSizeArray<T>: ExpressibleByArrayLiteral {
+internal class ConstantSizeBuffer<T>: ExpressibleByArrayLiteral {
     @usableFromInline
     typealias ArrayLiteralElement = T
     

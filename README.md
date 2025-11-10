@@ -81,7 +81,7 @@ Support Status Legend:
 | Functions - Communication - Serial | `readStringUntil`       | ❌      |                                                                                         |
 | Functions - Communication - Serial | `serialEvent`           | ❌      |                                                                                         |
 | Functions - Communication - Serial | `setTimeout`            | ❌      |                                                                                         |
-| Functions - Communication - Serial | `write`                 | ❌      |                                                                                         |
+| Functions - Communication - Serial | `write`                 | ✅      |                                                                                         |
 | Functions - Communication - Stream | `streamAvailable`       | ❌      |                                                                                         |
 | Functions - Communication - Stream | `streamFind`            | ❌      |                                                                                         |
 | Functions - Communication - Stream | `streamFindUntil`       | ❌      |                                                                                         |
