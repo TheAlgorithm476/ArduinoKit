@@ -120,12 +120,15 @@ public struct Serial: Stream {
     internal static var txBufferHead: UInt8 = 0
     @usableFromInline
     internal static var txBufferTail: UInt8 = 0
-    
     @usableFromInline
-    static var test = Int(64)
+    internal static var rxBufferHead: UInt8 = 0
+    @usableFromInline
+    internal static var rxBufferTail: UInt8 = 0
     
     @usableFromInline
     internal static var txBuffer = ConstantSizeBuffer<UInt8>(count: Int(SERIAL_TX_BUFFER_SIZE), repeating: 0)
+    @usableFromInline
+    internal static var rxBuffer = ConstantSizeBuffer<UInt8>(count: Int(SERIAL_RX_BUFFER_SIZE), repeating: 0)
     
     /// Arduino Reference: Language/Functions/Communication/Serial/begin
     ///
@@ -179,8 +182,9 @@ public struct Serial: Stream {
     ///
     /// - Parameters:
     /// - character: The ASCII Character to write to the Serial Port.
-    @inlinable
-    @inline(__always)
+    // @inlinable
+    // @inline(__always)
+    @inline(never)
     public static func write(character: UInt8) -> UInt8 {
         Self.written = true
         
@@ -272,6 +276,43 @@ public struct Serial: Stream {
         return Self.write(string: string)
     }
     
+    /// Arduino Reference: Language/Functions/Communication/Serial/print
+    ///
+    /// Prints data to the serial port as human-readable ASCII text. This command can take many forms.
+    /// Numbers are printed using an ASCII character for each digit.
+    /// Floats are similarly printed as ASCII digits, defaulting to two decimal places.
+    /// Bytes are sent as a single character.
+    /// Characters and strings are sent as-is.
+    ///
+    /// - Parameters:
+    /// - character: The character to print to Serial
+    /// - Returns: The amount of bytes written to Serial.
+    @inlinable
+    @inline(__always)
+    public static func print(character: UInt8) -> UInt8 {
+        return Self.write(character: character)
+    }
+    
+    @inlinable
+    @inline(__always)
+    @available(*, deprecated, message: "Use Serial.print(Int32, NumberBase)")
+    public static func print(number: Int32, base: UInt8) -> UInt8 {
+        return Self.print(number: number, base: .init(rawValue: base) ?? .decimal)
+    }
+    
+    @inlinable
+    @inline(__always)
+    public static func print(number: Int32, base: NumberBase) -> UInt8 {
+        if number < 0 && base == .decimal {
+            let dash = Self.print("-")
+            let number = -number
+            
+            return printNumber(number: number, base: .decimal) + dash
+        }
+        
+        return printNumber(number: number, base: base)
+    }
+    
     /// Arduino Reference: Language/Functions/Communication/Serial/println
     ///
     /// Prints data to the serial port as human-readable ASCII text followed by a line feed (ASCII 10, or '\n'). This command takes the same forms as Serial.print().
@@ -284,6 +325,39 @@ public struct Serial: Stream {
     public static func println(_ string: StaticString) -> UInt8 {
         let written = Self.write(string: string)
         return written + Self.write(character: 0x0A)
+    }
+    
+    /// Arduino Reference: Language/Functions/Communication/Serial/flush
+    ///
+    /// Waits for the transmission of outgoing serial data to complete.
+    @inlinable
+    @inline(__always)
+    public static func flush() {
+        guard Self.written else { return } // Return early if we've never written data to Serial before.
+        
+        while uart0.dataRegisterEmptyInterruptEnable == .on || !uart0.txComplete {
+            // Interrupts are disabled; call dataRegisterEmpty manually to prevent deadlocks.
+            if !cpuCore.globalInterruptEnable && uart0.dataRegisterEmptyInterruptEnable == .on {
+                dataRegisterEmptyInterruptHandler()
+            }
+        }
+    }
+    
+    /// Arduino Reference: Language/Functions/Communication/Serial/end
+    ///
+    /// Disables serial communication, allowing the RX and TX pins to be used for general input and output.
+    /// To re-enable serial communication, call Serial.begin().
+    @inlinable
+    @inline(__always)
+    public static func end() {
+        Self.flush()
+        
+        uart0.receiverEnable = .off
+        uart0.transmitterEnable = .off
+        uart0.rxCompleteInterruptEnable = .off
+        uart0.dataRegisterEmptyInterruptEnable = .off
+        
+        Self.rxBufferHead = Self.rxBufferTail
     }
     
     @usableFromInline
@@ -307,5 +381,38 @@ public struct Serial: Stream {
         if Self.txBufferHead == Self.txBufferTail {
             uart0.dataRegisterEmptyInterruptEnable = .off
         }
+    }
+    
+    @inlinable
+    @inline(__always)
+    internal static func printNumber(number: Int32, base: NumberBase) -> UInt8 {
+        var number: Int32 = number
+        
+        let buffer = ConstantSizeBuffer<UInt8>.init(count: (Int32.bitWidth / 8), repeating: 0)
+        var index: UInt8 = UInt8((Int32.bitWidth / 8) - 1)
+        
+        repeat {
+            let character: UInt8 = UInt8(number % Int32(base.rawValue))
+            number /= Int32(base.rawValue)
+            
+            buffer[Int(index)] = character < 10 ? character + 0x30 : character + 0x41 - 10 // 0x30 = ASCII '0'; 0x41 = ASCII 'A'
+            index -= 1
+        } while number > 0
+        
+        return write(buffer: buffer, ignoreZeroBytes: true)
+    }
+    
+    @inlinable
+    @inline(__always)
+    internal static func write(buffer: ConstantSizeBuffer<UInt8>, ignoreZeroBytes: Bool = false) -> UInt8 {
+        var sent: UInt8 = 0
+        for i in 0..<buffer.count {
+            if ignoreZeroBytes && buffer[i] == 0x00 { continue }
+            if write(character: buffer[i]) == 1 {
+                sent += 1
+            }
+        }
+        
+        return sent
     }
 }

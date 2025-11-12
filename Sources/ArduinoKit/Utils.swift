@@ -8,7 +8,7 @@
 import CoreAVR
 
 // ArduinoKit Utility Functions
-// These functions aren't part of ArduinoKit itself, but abstract away some of the more complex logic used repeatedly, like Atomic operations.
+// These functions aren't part of ArduinoKit itself, but abstract away some of the more complex logic used repeatedly, like Atomic operations, or Constant Size Buffers.
 
 /// Derived from: avr-libc/include/util/atomic.h - ATOMIC_BLOCK
 ///
@@ -17,17 +17,20 @@ import CoreAVR
 @inlinable
 @inline(__always)
 internal func atomic(block: () -> Void) {
-    let interruptsEnabled = cpuCore.globalInterruptEnable
-    if interruptsEnabled { Interrupts.disableInterrupts() }
+    if !cpuCore.globalInterruptEnable {
+        block()
+        return
+    }
     
+    Interrupts.disableInterrupts()
     block()
-    
-    if interruptsEnabled { Interrupts.enableInterrupts() }
+    Interrupts.enableInterrupts()
 }
 
 /// Derived from: StackOverflow - https://stackoverflow.com/a/62735799
 ///
 /// Allocates a managed buffer with a fixed size.
+// This is awaiting Swift 6.2's Inline Arrays.
 @usableFromInline
 internal class ConstantSizeBuffer<T>: ExpressibleByArrayLiteral {
     @usableFromInline

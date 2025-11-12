@@ -63,10 +63,10 @@ Support Status Legend:
 | Functions - Communication - Serial | `available`             | ❌      |                                                                                         |
 | Functions - Communication - Serial | `availableForWrite`     | ❌      |                                                                                         |
 | Functions - Communication - Serial | `begin`                 | ✅      |                                                                                         |
-| Functions - Communication - Serial | `end`                   | ❌      |                                                                                         |
+| Functions - Communication - Serial | `end`                   | ✅      |                                                                                         |
 | Functions - Communication - Serial | `find`                  | ❌      |                                                                                         |
 | Functions - Communication - Serial | `findUntil`             | ❌      |                                                                                         |
-| Functions - Communication - Serial | `flush`                 | ❌      |                                                                                         |
+| Functions - Communication - Serial | `flush`                 | ✅      |                                                                                         |
 | Functions - Communication - Serial | `getTimeout`            | ❌      |                                                                                         |
 | Functions - Communication - Serial | `ifSerial`              | ❌      |                                                                                         |
 | Functions - Communication - Serial | `parseFloat`            | ❌      |                                                                                         |
