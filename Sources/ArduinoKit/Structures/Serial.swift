@@ -293,6 +293,18 @@ public struct Serial: Stream {
         return Self.write(character: character)
     }
     
+    /// Arduino Reference: Language/Functions/Communication/Serial/print
+    ///
+    /// Prints data to the serial port as human-readable ASCII text. This command can take many forms.
+    /// Numbers are printed using an ASCII character for each digit.
+    /// Floats are similarly printed as ASCII digits, defaulting to two decimal places.
+    /// Bytes are sent as a single character.
+    /// Characters and strings are sent as-is.
+    ///
+    /// - Parameters:
+    /// - number: The number to print to Serial
+    /// - base: The base of the number being printed (e.g. DEC, HEX, BIN, etc..)
+    /// - Returns: The amount of bytes written to Serial.
     @inlinable
     @inline(__always)
     @available(*, deprecated, message: "Use Serial.print(Int32, NumberBase)")
@@ -300,6 +312,14 @@ public struct Serial: Stream {
         return Self.print(number: number, base: .init(rawValue: base) ?? .decimal)
     }
     
+    
+    /// Prints a number to the Serial port in a human-readable form.
+    /// Numbers are printed using an ASCII character for each digit.
+    ///
+    /// - Parameters:
+    /// - number: The number to print
+    /// - base: The NumberBase of the number being printed (e.g. .decimal, .octal, ...)
+    /// - Returns: The amount of bytes written to Serial.
     @inlinable
     @inline(__always)
     public static func print(number: Int32, base: NumberBase) -> UInt8 {
@@ -324,6 +344,39 @@ public struct Serial: Stream {
     @inline(__always)
     public static func println(_ string: StaticString) -> UInt8 {
         let written = Self.write(string: string)
+        return written + Self.write(character: 0x0A)
+    }
+    
+    /// Arduino Reference: Language/Functions/Communication/Serial/println
+    ///
+    /// Prints a number to the Serial port in a human-readable form, followed by a line feed (ASCII 10, or '\n').
+    /// Numbers are printed using an ASCII character for each digit.
+    ///
+    /// - Parameters:
+    /// - number: The number to print
+    /// - base: The NumberBase of the number being printed (e.g. .decimal, .octal, ...)
+    /// - Returns: The amount of bytes written to Serial.
+    @inlinable
+    @inline(__always)
+    @available(*, deprecated, message: "Use Serial.println(Int32, NumberBase)")
+    public static func println(number: Int32, base: UInt8) -> UInt8 {
+        let written = Self.print(number: number, base: .init(rawValue: base) ?? .decimal)
+        return written + Self.write(character: 0x0A)
+    }
+    
+    /// Arduino Reference: Language/Functions/Communication/Serial/println
+    ///
+    /// Prints a number to the Serial port in a human-readable form, followed by a line feed (ASCII 10, or '\n').
+    /// Numbers are printed using an ASCII character for each digit.
+    ///
+    /// - Parameters:
+    /// - number: The number to print
+    /// - base: The NumberBase of the number being printed (e.g. .decimal, .octal, ...)
+    /// - Returns: The amount of bytes written to Serial.
+    @inlinable
+    @inline(__always)
+    public static func println(number: Int32, base: NumberBase) -> UInt8 {
+        let written = Self.print(number: number, base: base)
         return written + Self.write(character: 0x0A)
     }
     
@@ -383,6 +436,7 @@ public struct Serial: Stream {
         }
     }
     
+    // TODO: Fix negative hex print.
     @inlinable
     @inline(__always)
     internal static func printNumber(number: Int32, base: NumberBase) -> UInt8 {
@@ -392,12 +446,12 @@ public struct Serial: Stream {
         var index: UInt8 = UInt8((Int32.bitWidth / 8) - 1)
         
         repeat {
-            let character: UInt8 = UInt8(number % Int32(base.rawValue))
+            let character: Int8 = Int8(number % Int32(base.rawValue))
             number /= Int32(base.rawValue)
             
-            buffer[Int(index)] = character < 10 ? character + 0x30 : character + 0x41 - 10 // 0x30 = ASCII '0'; 0x41 = ASCII 'A'
+            buffer[Int(index)] = UInt8(character < 10 ? character + 0x30 : character + 0x41 - 10) // 0x30 = ASCII '0'; 0x41 = ASCII 'A'
             index -= 1
-        } while number > 0
+        } while number != 0
         
         return write(buffer: buffer, ignoreZeroBytes: true)
     }
