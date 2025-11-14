@@ -128,10 +128,10 @@ Support Status Legend:
 | Functions - Math                   | `sqrt`                  | ❌      |                                                                                         |
 | Functions - Random Numbers         | `random`                | ✅      | Deprecated. Use ArduinoKit's replacement `random` function instead.                     |
 | Functions - Random Numbers         | `randomSeed`            | ✅      | Deprecated. Use ArduinoKit's replacement `random` function instead.                     |
-| Functions - Time                   | `delay`                 | ❌      |                                                                                         |
+| Functions - Time                   | `delay`                 | ✅      |                                                                                         |
 | Functions - Time                   | `delayMicroseconds`     | ❌      |                                                                                         |
-| Functions - Time                   | `micros`                | ❌      |                                                                                         |
-| Functions - Time                   | `millis`                | ❌      |                                                                                         |
+| Functions - Time                   | `micros`                | ✅      |                                                                                         |
+| Functions - Time                   | `millis`                | ✅      |                                                                                         |
 | Functions - Trigonometry           | `cos`                   | ❌      |                                                                                         |
 | Functions - Trigonometry           | `sin`                   | ❌      |                                                                                         |
 | Functions - Trigonometry           | `tan`                   | ❌      |                                                                                         |
