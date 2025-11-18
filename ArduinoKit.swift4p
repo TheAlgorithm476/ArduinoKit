@@ -2,6 +2,7 @@ files:
 - main.swift
 - Sources/ArduinoKit/Functions/Bits.swift
 - Sources/ArduinoKit/Functions/Characters.swift
+- Sources/ArduinoKit/Functions/DigitalIO.swift
 - Sources/ArduinoKit/Functions/Interrupts.swift
 - Sources/ArduinoKit/Functions/Math.swift
 - Sources/ArduinoKit/Functions/Random.swift
