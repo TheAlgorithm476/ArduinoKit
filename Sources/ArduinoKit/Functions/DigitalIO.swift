@@ -30,6 +30,37 @@ public enum DigitalPin: UInt8 {
     case pin19 = 19
 }
 
+public enum PinTimer {
+    case noTimer
+    case timer0A
+    case timer0B
+    case timer1A
+    case timer1B
+    case timer2A
+    case timer2B
+}
+
+@inlinable
+@inline(__always)
+internal func digitalPinToTimer(pin: DigitalPin) -> PinTimer {
+    switch pin {
+        case .pin6:
+            return .timer0A
+        case .pin5:
+            return .timer0B
+        case .pin9:
+            return .timer1A
+        case .pin10:
+            return .timer1B
+        case .pin11:
+            return .timer2A
+        case .pin3:
+            return .timer2B
+        default:
+            return .noTimer
+    }
+}
+
 /// Arduino Reference: Language/Functions/Digital IO/pinMode
 ///
 /// Configures the specified pin to behave either as an input or an output.
@@ -88,5 +119,86 @@ public func pinMode(pin: DigitalPin, mode: DataDirectionFlag) {
         case .pin17: GPIO.pc3.setDataDirection(mode)
         case .pin18: GPIO.pc4.setDataDirection(mode)
         case .pin19: GPIO.pc5.setDataDirection(mode)
+    }
+}
+
+@inlinable
+@inline(__always)
+internal func disablePWM(for timer: PinTimer) {
+    switch timer {
+        case .timer0A:
+            timer0.CompareOutputModeA = .normal
+        case .timer0B:
+            timer0.CompareOutputModeB = .normal
+        case .timer1A:
+            timer1.CompareOutputModeA = .normal
+        case .timer1B:
+            timer1.CompareOutputModeB = .normal
+        case .timer2A:
+            timer2.CompareOutputModeA = .normal
+        case .timer2B:
+            timer2.CompareOutputModeB = .normal
+        default: // Pin isn't connected to a timer
+            return
+    }
+}
+
+/// Arduino Reference: Language/Functions/Digital IO/digitalWrite
+///
+/// Write a `HIGH` or `LOW` value to a digital pin.
+///
+/// If the pin has been configured as an `OUTPUT` with `pinMode()`, its voltage will be set to the corresponding value: 5V (or 3.3V on 3.3V boards) for `HIGH`, 0V (ground) for `LOW`.
+///
+/// If the pin is configured as an `INPUT`, `digitalWrite()` will enable (`HIGH`) or disable (`LOW`) the internal pullup on the input pin. It is recommended to set the `pinMode()` to `INPUT_PULLUP` to enable the internal pull-up resistor.
+///
+/// If you do not set the `pinMode()` to `OUTPUT`, and connect an LED to a pin, when calling `digitalWrite(HIGH)`, the LED may appear dim. Without explicitly setting `pinMode()`, `digitalWrite()` will have enabled the internal pull-up resistor, which acts like a large current-limiting resistor.
+///
+/// - Parameters:
+/// - pin: The pin number
+/// - value: `HIGH` or `LOW`
+@inlinable
+@inline(__always)
+@available(*, deprecated, message: "Use `digitalWrite(pin: DigitalPin, value: DigitalValue)` instead.")
+public func digitalWrite(pin: UInt8, value: UInt8) {
+    guard pin < 20 else { return }
+    guard value < 0x02 else { return }
+    
+    digitalWrite(pin: .init(rawValue: pin)!, value: value == 0x01 ? .high : .low)
+}
+
+/// Writes a CoreAVR `DigitalValue` to an ArduinoKit `DigitalPin`.
+///
+/// - Parameters:
+/// - pin: The digital pin
+/// - value: `.high` or `.low`
+@inlinable
+@inline(__always)
+public func digitalWrite(pin: DigitalPin, value: DigitalValue) {
+    let timer = digitalPinToTimer(pin: pin)
+    
+    // Disable PWM before writing to pin
+    disablePWM(for: timer)
+    
+    switch pin {
+        case .pin0:  GPIO.pd0.setValue(value)
+        case .pin1:  GPIO.pd1.setValue(value)
+        case .pin2:  GPIO.pd2.setValue(value)
+        case .pin3:  GPIO.pd3.setValue(value)
+        case .pin4:  GPIO.pd4.setValue(value)
+        case .pin5:  GPIO.pd5.setValue(value)
+        case .pin6:  GPIO.pd6.setValue(value)
+        case .pin7:  GPIO.pd7.setValue(value)
+        case .pin8:  GPIO.pb0.setValue(value)
+        case .pin9:  GPIO.pb1.setValue(value)
+        case .pin10: GPIO.pb2.setValue(value)
+        case .pin11: GPIO.pb3.setValue(value)
+        case .pin12: GPIO.pb4.setValue(value)
+        case .pin13: GPIO.pb5.setValue(value)
+        case .pin14: GPIO.pc0.setValue(value)
+        case .pin15: GPIO.pc1.setValue(value)
+        case .pin16: GPIO.pc2.setValue(value)
+        case .pin17: GPIO.pc3.setValue(value)
+        case .pin18: GPIO.pc4.setValue(value)
+        case .pin19: GPIO.pc5.setValue(value)
     }
 }
