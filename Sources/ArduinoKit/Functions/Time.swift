@@ -56,9 +56,9 @@ public func micros() -> UInt32 {
     Interrupts.disableInterrupts()
     
     var overflowCount = timer0OverflowCount[0]
-    let timer = timer0.timerCounterNumber
+    let timer = timer0.number
     
-    if (timer0.timerInterruptFlagRegister & 0b00000001) == 1 { // TODO: Replace with bit access once HALGEN parity gets merged
+    if timer0.overflowFlag {
         overflowCount += 1
     }
     

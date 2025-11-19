@@ -124,20 +124,20 @@ public func pinMode(pin: DigitalPin, mode: DataDirectionFlag) {
 
 @inlinable
 @inline(__always)
-internal func disablePWM(for timer: PinTimer) {
+internal func disablePWM(for timer: PinTimer) {    
     switch timer {
         case .timer0A:
-            timer0.CompareOutputModeA = .normal
+            timer0.compareOutputModeA = .normal
         case .timer0B:
-            timer0.CompareOutputModeB = .normal
+            timer0.compareOutputModeB = .normal
         case .timer1A:
-            timer1.CompareOutputModeA = .normal
+            timer1.compareOutputModeA = .normal
         case .timer1B:
-            timer1.CompareOutputModeB = .normal
+            timer1.compareOutputModeB = .normal
         case .timer2A:
-            timer2.CompareOutputModeA = .normal
+            timer2.compareOutputModeA = .normal
         case .timer2B:
-            timer2.CompareOutputModeB = .normal
+            timer2.compareOutputModeB = .normal
         default: // Pin isn't connected to a timer
             return
     }
