@@ -30,6 +30,40 @@ public enum DigitalPin: UInt8 {
     case pin19 = 19
 }
 
+/// Arduino Reference: Language/Functions/Digital IO/pinMode
+///
+/// Configures the specified pin to behave either as an input or an output.
+///
+/// It is possible to enable the internal pullup resistors with the mode `INPUT_PULLUP`. Additionally, the `INPUT` mode explicitly disables the internal pullups.
+///
+/// KNOWN LIMITATIONS: passing `INPUT_PULLUP` does nothing, as CoreAVR (currently) does not have a way to represent it.
+///
+/// - Parameters:
+/// - pin: The pin number to set the mode of.
+/// - mode: `INPUT`, `OUTPUT`, or `INPUT_PULLUP`.
+@inlinable
+@inline(__always)
+@available(*, deprecated, message: "Use `pinMode(pin: DigitalPin, mode: DataDirectionFlag)` instead.")
+public func pinMode(pin: UInt8, mode: UInt8) {
+    guard pin < 20 else { return }
+    guard mode < 0x02 else { return }
+    
+    let mode: DataDirectionFlag? = switch mode {
+        case INPUT: .input
+        case OUTPUT: .output
+        default: nil // This should never happen!
+    }
+    
+    pinMode(pin: .init(rawValue: pin)!, mode: mode!)
+}
+
+/// Arduino Reference: Language/Functions/Digital IO/pinMode
+///
+/// Configures the specified pin to behave either as an input or an output.
+///
+/// - Parameters:
+/// - pin: The pin number to set the mode of.
+/// - mode: The data direction flag (e.g. `.input`, `.output`)
 @inlinable
 @inline(__always)
 public func pinMode(pin: DigitalPin, mode: DataDirectionFlag) {
