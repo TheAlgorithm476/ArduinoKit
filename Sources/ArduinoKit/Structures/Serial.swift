@@ -182,8 +182,7 @@ public struct Serial: Stream {
     ///
     /// - Parameters:
     /// - character: The ASCII Character to write to the Serial Port.
-    // @inlinable
-    // @inline(__always)
+    @discardableResult
     @inline(never)
     public static func write(character: UInt8) -> UInt8 {
         Self.written = true
@@ -226,6 +225,7 @@ public struct Serial: Stream {
     /// - Parameters:
     /// - buffer: The buffer to write to the Serial Port.
     /// - Returns: The amount of bytes written to Serial.
+    @discardableResult
     @inlinable
     @inline(__always)
     public static func write(buffer: Array<UInt8>) -> UInt8 {
@@ -246,6 +246,7 @@ public struct Serial: Stream {
     /// - Parameters:
     /// - string: The buffer to write to the Serial Port.
     /// - Returns: The amount of bytes written to Serial.
+    @discardableResult
     @inlinable
     @inline(__always)
     public static func write(string: StaticString) -> UInt8 {
@@ -270,6 +271,7 @@ public struct Serial: Stream {
     /// - Parameters:
     /// - string: The string to print to Serial
     /// - Returns: The amount of bytes written to Serial.
+    @discardableResult
     @inlinable
     @inline(__always)
     public static func print(_ string: StaticString) -> UInt8 {
@@ -287,6 +289,7 @@ public struct Serial: Stream {
     /// - Parameters:
     /// - character: The character to print to Serial
     /// - Returns: The amount of bytes written to Serial.
+    @discardableResult
     @inlinable
     @inline(__always)
     public static func print(character: UInt8) -> UInt8 {
@@ -305,6 +308,7 @@ public struct Serial: Stream {
     /// - number: The number to print to Serial
     /// - base: The base of the number being printed (e.g. DEC, HEX, BIN, etc..)
     /// - Returns: The amount of bytes written to Serial.
+    @discardableResult
     @inlinable
     @inline(__always)
     @available(*, deprecated, message: "Use Serial.print(Int32, NumberBase)")
@@ -320,6 +324,7 @@ public struct Serial: Stream {
     /// - number: The number to print
     /// - base: The NumberBase of the number being printed (e.g. .decimal, .octal, ...)
     /// - Returns: The amount of bytes written to Serial.
+    @discardableResult
     @inlinable
     @inline(__always)
     public static func print(number: Int32, base: NumberBase) -> UInt8 {
@@ -340,6 +345,7 @@ public struct Serial: Stream {
     /// - Parameters:
     /// - string: The string to print to Serial
     /// - Returns: The amount of bytes written to Serial.
+    @discardableResult
     @inlinable
     @inline(__always)
     public static func println(_ string: StaticString) -> UInt8 {
@@ -356,6 +362,7 @@ public struct Serial: Stream {
     /// - number: The number to print
     /// - base: The NumberBase of the number being printed (e.g. .decimal, .octal, ...)
     /// - Returns: The amount of bytes written to Serial.
+    @discardableResult
     @inlinable
     @inline(__always)
     @available(*, deprecated, message: "Use Serial.println(Int32, NumberBase)")
@@ -373,6 +380,7 @@ public struct Serial: Stream {
     /// - number: The number to print
     /// - base: The NumberBase of the number being printed (e.g. .decimal, .octal, ...)
     /// - Returns: The amount of bytes written to Serial.
+    @discardableResult
     @inlinable
     @inline(__always)
     public static func println(number: Int32, base: NumberBase) -> UInt8 {
@@ -437,6 +445,7 @@ public struct Serial: Stream {
     }
     
     // TODO: Fix negative hex print.
+    @discardableResult
     @inlinable
     @inline(__always)
     internal static func printNumber(number: Int32, base: NumberBase) -> UInt8 {
@@ -456,6 +465,7 @@ public struct Serial: Stream {
         return write(buffer: buffer, ignoreZeroBytes: true)
     }
     
+    @discardableResult
     @inlinable
     @inline(__always)
     internal static func write(buffer: ConstantSizeBuffer<UInt8>, ignoreZeroBytes: Bool = false) -> UInt8 {
