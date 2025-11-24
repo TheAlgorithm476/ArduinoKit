@@ -56,7 +56,7 @@ public func micros() -> UInt32 {
     Interrupts.disableInterrupts()
     
     var overflowCount = timer0OverflowCount[0]
-    let timer = timer0.number
+    let timer = timer0.count
     
     if timer0.overflowFlag {
         overflowCount += 1

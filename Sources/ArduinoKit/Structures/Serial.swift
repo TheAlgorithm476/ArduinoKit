@@ -451,7 +451,7 @@ public struct Serial: Stream {
     internal static func printNumber(number: Int32, base: NumberBase) -> UInt8 {
         var number: Int32 = number
         
-        let buffer = ConstantSizeBuffer<UInt8>.init(count: (Int32.bitWidth / 8), repeating: 0)
+        var buffer = ConstantSizeBuffer<UInt8>.init(count: (Int32.bitWidth / 8), repeating: 0)
         var index: UInt8 = UInt8((Int32.bitWidth / 8) - 1)
         
         repeat {
@@ -468,7 +468,7 @@ public struct Serial: Stream {
     @discardableResult
     @inlinable
     @inline(__always)
-    internal static func write(buffer: ConstantSizeBuffer<UInt8>, ignoreZeroBytes: Bool = false) -> UInt8 {
+    internal static func write(buffer: borrowing ConstantSizeBuffer<UInt8>, ignoreZeroBytes: Bool = false) -> UInt8 {
         var sent: UInt8 = 0
         for i in 0..<buffer.count {
             if ignoreZeroBytes && buffer[i] == 0x00 { continue }

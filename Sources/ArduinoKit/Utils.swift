@@ -32,11 +32,8 @@ internal func atomic(block: () -> Void) {
 /// Allocates a managed buffer with a fixed size.
 // This is awaiting Swift 6.2's Inline Arrays.
 @usableFromInline
-internal class ConstantSizeBuffer<T>: ExpressibleByArrayLiteral {
-    @usableFromInline
-    typealias ArrayLiteralElement = T
-    
-    private let memory: UnsafeMutableBufferPointer<T>
+internal struct ConstantSizeBuffer<T>: ~Copyable {
+    private var memory: UnsafeMutableBufferPointer<T>
     
     public var startIndex: Int { 0 }
     public var endIndex: Int { self.count - 1 }
@@ -45,22 +42,9 @@ internal class ConstantSizeBuffer<T>: ExpressibleByArrayLiteral {
         get { memory.count }
     }
     
-    private init(_ count: Int) {
+    public init(count: Int, repeating value: T) {
         self.memory = UnsafeMutableBufferPointer.allocate(capacity: count)!
-    }
-    
-    public convenience init(count: Int, repeating value: T) {
-        self.init(count)
         memory.initialize(repeating: value)
-    }
-    
-    public required convenience init(arrayLiteral: ArrayLiteralElement...) {
-        self.init(arrayLiteral.count)
-        let _ = memory.initialize(from: arrayLiteral)
-    }
-    
-    deinit {
-        memory.deallocate()
     }
     
     public subscript(index: Int) -> T {
