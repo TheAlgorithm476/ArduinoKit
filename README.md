@@ -110,7 +110,7 @@ Support Status Legend:
 | Functions - Communication - Wire   | `setClock`              | ❌      |                                                                                         |
 | Functions - Communication - Wire   | `setWireTimeout`        | ❌      |                                                                                         |
 | Functions - Communication - Wire   | `write`                 | ❌      |                                                                                         |
-| Functions - Digital IO             | `digitalRead`           | ❌      |                                                                                         |
+| Functions - Digital IO             | `digitalRead`           | ✅      |                                                                                         |
 | Functions - Digital IO             | `digitalWrite`          | ✅      |                                                                                         |
 | Functions - Digital IO             | `pinMode`               | 🚧      | Functional, but only INPUT and OUTPUT. INPUT_PULLUP does nothing.                       |
 | Functions - External Interrupts    | `attachInterrupt`       | ❌      |                                                                                         |

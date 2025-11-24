@@ -202,3 +202,49 @@ public func digitalWrite(pin: DigitalPin, value: DigitalValue) {
         case .pin19: GPIO.pc5.setValue(value)
     }
 }
+
+@inlinable
+@inline(__always)
+@available(*, deprecated, message: "Use `digitalRead(pin: DigitalPin) -> DigitalValue` instead.")
+public func digitalRead(pin: UInt8) -> UInt8 {
+    guard pin < 20 else { return }
+    
+    return digitalRead(pin: .init(rawValue: pin)!) == .high ? 1 : 0
+}
+
+/// Reads a CoreAVR `DigitalValue` from an ArduinoKit `DigitalPin`.
+///
+/// - Parameters:
+/// - pin: The digital pin
+/// - Returns: `.high` or `.low`
+@inlinable
+@inline(__always)
+public func digitalRead(pin: DigitalPin) -> DigitalValue {
+    let timer = digitalPinToTimer(pin: pin)
+    
+    // Disable PWM before reading from pin
+    disablePWM(for: timer)
+    
+    return switch pin {
+        case .pin0:  GPIO.pd0.value()
+        case .pin1:  GPIO.pd1.value()
+        case .pin2:  GPIO.pd2.value()
+        case .pin3:  GPIO.pd3.value()
+        case .pin4:  GPIO.pd4.value()
+        case .pin5:  GPIO.pd5.value()
+        case .pin6:  GPIO.pd6.value()
+        case .pin7:  GPIO.pd7.value()
+        case .pin8:  GPIO.pb0.value()
+        case .pin9:  GPIO.pb1.value()
+        case .pin10: GPIO.pb2.value()
+        case .pin11: GPIO.pb3.value()
+        case .pin12: GPIO.pb4.value()
+        case .pin13: GPIO.pb5.value()
+        case .pin14: GPIO.pc0.value()
+        case .pin15: GPIO.pc1.value()
+        case .pin16: GPIO.pc2.value()
+        case .pin17: GPIO.pc3.value()
+        case .pin18: GPIO.pc4.value()
+        case .pin19: GPIO.pc5.value()
+    }
+}
