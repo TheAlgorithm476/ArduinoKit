@@ -203,13 +203,20 @@ public func digitalWrite(pin: DigitalPin, value: DigitalValue) {
     }
 }
 
+/// Arduino Reference: Language/Functions/Digital IO/digitalRead
+///
+/// Reads the value from a specified digital pin, either `HIGH` or `LOW`.
+///
+/// - Parameters:
+/// - pin: The pin number you want to read
+/// - Returns: `HIGH` or `LOW`.
 @inlinable
 @inline(__always)
 @available(*, deprecated, message: "Use `digitalRead(pin: DigitalPin) -> DigitalValue` instead.")
 public func digitalRead(pin: UInt8) -> UInt8 {
     guard pin < 20 else { return }
     
-    return digitalRead(pin: .init(rawValue: pin)!) == .high ? 1 : 0
+    return digitalRead(pin: .init(rawValue: pin)!) == .high ? HIGH : LOW
 }
 
 /// Reads a CoreAVR `DigitalValue` from an ArduinoKit `DigitalPin`.
