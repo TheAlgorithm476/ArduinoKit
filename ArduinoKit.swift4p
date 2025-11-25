@@ -1,5 +1,6 @@
 files:
 - main.swift
+- Sources/ArduinoKit/Functions/AnalogIO.swift
 - Sources/ArduinoKit/Functions/Bits.swift
 - Sources/ArduinoKit/Functions/Characters.swift
 - Sources/ArduinoKit/Functions/DigitalIO.swift
@@ -11,6 +12,7 @@ files:
 - Sources/ArduinoKit/Structures/Serial.swift
 - Sources/ArduinoKit/Structures/Stream.swift
 - Sources/ArduinoKit/Constants.swift
+- Sources/ArduinoKit/init.swift
 - Sources/ArduinoKit/Utils.swift
 - Package.swift
 settings:

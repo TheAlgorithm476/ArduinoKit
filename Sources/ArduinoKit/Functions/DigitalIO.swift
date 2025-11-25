@@ -214,7 +214,7 @@ public func digitalWrite(pin: DigitalPin, value: DigitalValue) {
 @inline(__always)
 @available(*, deprecated, message: "Use `digitalRead(pin: DigitalPin) -> DigitalValue` instead.")
 public func digitalRead(pin: UInt8) -> UInt8 {
-    guard pin < 20 else { return }
+    guard pin < 20 else { return LOW }
     
     return digitalRead(pin: .init(rawValue: pin)!) == .high ? HIGH : LOW
 }

@@ -23,7 +23,7 @@ Support Status Legend:
 | Functions - Analog IO              | `analogRead`            | ❌      |                                                                                         |
 | Functions - Analog IO              | `analogReadResolution`  | ❌      |                                                                                         |
 | Functions - Analog IO              | `analogReference`       | ❌      |                                                                                         |
-| Functions - Analog IO              | `analogWrite`           | ❌      |                                                                                         |
+| Functions - Analog IO              | `analogWrite`           | ✅      |                                                                                         |
 | Functions - Analog IO              | `analogWriteResolution` | ❌      |                                                                                         |
 | Functions - Bits and Bytes         | `bit`                   | ✅      |                                                                                         |
 | Functions - Bits and Bytes         | `bitClear`              | ✅      |                                                                                         |
