@@ -156,4 +156,4 @@ Support Status Legend:
 | Structure - Sketch                 | `setup`                 | ❌      |                                                                                         |
 | Variables - Constants              | `highLow`               | ✅      | Available in CoreAVR as `DigitalValue`                                                  |
 | Variables - Constants              | `inputOutputPullup`     | ✅      | Partially available in CoreAVR as `DataDirectionFlag`                                   |
-| Variables - Constants              | `LED_BUILTIN`           | ❌      |                                                                                         |
+| Variables - Constants              | `LED_BUILTIN`           | ✅      | Deprecated. Use the `builtinLed`-constant instead.                                      |

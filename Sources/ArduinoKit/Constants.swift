@@ -62,3 +62,18 @@ public let OUTPUT: UInt8 = 0x01
 ///
 /// Pins configured as inputs with either `INPUT` or `INPUT_PULLUP` can be damaged or destroyed if they are connected to voltages below ground (negative voltages) or above the positive power rail (5V or 3V).
 public let INPUT_PULLUP: UInt8 = 0x02
+
+/// Arduino Reference: Language/Variables/Constants/ledbuiltin
+///
+/// Most Arduino boards have a pin connected to an on-board LED in series with a resistor.
+/// The constant `LED_BUILTIN` is the number of the pin to which the on-board LED is connected.
+/// Most boards have this LED connected to digital pin 13.
+@available(*, deprecated, message: "Use `builtinLed` instead.")
+public let LED_BUILTIN: UInt8 = 13
+
+/// Arduino Reference: Language/Variables/Constants/ledbuiltin
+///
+/// Most Arduino boards have a pin connected to an on-board LED in series with a resistor.
+/// The constant `builtinLed` is the number of the pin to which the on-board LED is connected.
+/// Most boards have this LED connected to digital pin 13.
+public let builtinLed: DigitalPin = .pin13
