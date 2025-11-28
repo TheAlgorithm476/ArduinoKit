@@ -93,6 +93,26 @@ public func pinMode(pin: UInt8, mode: UInt8) {
 /// Configures the specified pin to behave either as an input or an output.
 ///
 /// - Parameters:
+/// - analogPin: The pin number to set the mode of.
+/// - mode: The data direction flag (e.g. `.input`, `.output`)
+@inlinable
+@inline(__always)
+public func pinMode(analogPin: AnalogPin, mode: DataDirectionFlag) {
+    switch analogPin {
+        case .analog0: GPIO.pc0.setDataDirection(mode)
+        case .analog1: GPIO.pc1.setDataDirection(mode)
+        case .analog2: GPIO.pc2.setDataDirection(mode)
+        case .analog3: GPIO.pc3.setDataDirection(mode)
+        case .analog4: GPIO.pc4.setDataDirection(mode)
+        case .analog5: GPIO.pc5.setDataDirection(mode)
+    }
+}
+
+/// Arduino Reference: Language/Functions/Digital IO/pinMode
+///
+/// Configures the specified pin to behave either as an input or an output.
+///
+/// - Parameters:
 /// - pin: The pin number to set the mode of.
 /// - mode: The data direction flag (e.g. `.input`, `.output`)
 @inlinable

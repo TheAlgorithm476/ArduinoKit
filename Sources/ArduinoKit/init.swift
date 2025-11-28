@@ -10,6 +10,8 @@ import CoreAVR
 /// ArduinoKit Initialization Function.
 ///
 /// This function should be called before any other ArduinoKit function is called.
+@inlinable
+@inline(__always)
 public func initializeArduino() {
     // Enable Interrupts
     // TODO: Rename to Interrupts.enable()?

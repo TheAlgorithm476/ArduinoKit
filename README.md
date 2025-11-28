@@ -20,7 +20,7 @@ Support Status Legend:
 | Functions - Advanced IO            | `shiftIn`               | ❌      |                                                                                         |
 | Functions - Advanced IO            | `shiftOut`              | ❌      |                                                                                         |
 | Functions - Advanced IO            | `tone`                  | ❌      |                                                                                         |
-| Functions - Analog IO              | `analogRead`            | ❌      |                                                                                         |
+| Functions - Analog IO              | `analogRead`            | ✅      |                                                                                         |
 | Functions - Analog IO              | `analogReadResolution`  | ❌      |                                                                                         |
 | Functions - Analog IO              | `analogReference`       | ❌      |                                                                                         |
 | Functions - Analog IO              | `analogWrite`           | ✅      |                                                                                         |
