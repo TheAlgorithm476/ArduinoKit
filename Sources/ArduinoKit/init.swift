@@ -30,10 +30,9 @@ public func initializeArduino() {
     timer2.waveformGenerationMode = .phaseCorrectPWM
     timer2.prescaler = .runningSixtyFour // TODO: Rename to .running64 once HALGEN merges
     
-    // TODO: Improve this logic once ADC is properly implemented
     // Set up ADC
-    AnalogeDigitalConverter.prescalerSelectBits = .Factor128
-    AnalogeDigitalConverter.enableADC = true
+    adc.prescaler = .divide128
+    adc.enabled = true
     
     // TODO: Improve this logic, just clearing the register is not something I'd like to "just do".
     // Disconnect UART for use in Digital IO (Serial.begin will re-enable them)

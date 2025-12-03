@@ -17,7 +17,7 @@ public enum AnalogPin: UInt8 {
 }
 
 @usableFromInline
-internal let analogReference: UInt8 = 1 // TODO: What is this magic number?
+internal let analogReference: VoltageReference = .externalCapacitor
 
 /// Arduino Reference: Language/Functions/Analog IO/analogRead
 ///
@@ -59,15 +59,16 @@ public func analogRead(pin: UInt8) -> UInt16 { // TODO: Rewrite after ADC is pro
 /// - Returns: The analog reading on the pin.
 @inlinable
 @inline(__always)
-public func analogRead(pin: AnalogPin) -> UInt16 { // TODO: Rewrite after ADC is properly and fully implemented
-    AnalogeDigitalConverter.MultiplexerSelectionRegister = (analogReference << 6) | (pin.rawValue & 0x07)
-    AnalogeDigitalConverter.startConversion()
+public func analogRead(pin: AnalogPin) -> UInt16 {
+    adc.reference = analogReference
+    adc.channel = .init(rawValue: pin.rawValue) ?? .gnd
+    adc.converting = true
     
-    while AnalogeDigitalConverter.conversionRunning {
+    while adc.converting {
         // do nothing
     }
     
-    return _volatileRegisterReadUInt16(0x78)
+    return adc.dataRegister
 }
 
 /// Arduino Reference: Language/Functions/Analog IO/analogWrite
