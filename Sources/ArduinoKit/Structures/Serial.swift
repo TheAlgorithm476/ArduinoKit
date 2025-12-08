@@ -474,7 +474,21 @@ public struct Serial: Stream {
     @inline(never)
     @interruptHandler
     @_silgen_name("__vector_18")
-    public static func receiveCompleteInterruptHandler() {}
+    public static func receiveCompleteInterruptHandler() {
+        if uart0.parityError {
+            // Read byte and discard it.
+            let _ = uart0.USARTIODataRegister
+            return
+        }
+        
+        let character = uart0.USARTIODataRegister
+        let index = (Self.rxBufferHead + 1) % Self.SERIAL_RX_BUFFER_SIZE
+        
+        if index != Self.rxBufferTail {
+            Self.rxBuffer[Self.rxBufferHead] = character
+            Self.rxBufferHead = index
+        }
+    }
     
     @inline(never)
     @interruptHandler
