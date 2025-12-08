@@ -176,6 +176,56 @@ public struct Serial: Stream {
         uart0.dataRegisterEmptyInterruptEnable = .off
     }
     
+    /// Arduino Reference: Language/Functions/Communication/Serial/available
+    ///
+    /// Get the number of bytes (characters) available for reading from the serial port.
+    /// This is data that’s already arrived and stored in the serial receive buffer (which holds 64 bytes).
+    ///
+    /// - Returns: The number of bytes available to read.
+    @inlinable
+    @inline(__always)
+    public static func available() -> UInt8 {
+        return (Self.SERIAL_RX_BUFFER_SIZE + Self.rxBufferHead - Self.rxBufferTail) % Self.SERIAL_RX_BUFFER_SIZE
+    }
+    
+    /// Arduino Reference: Language/Functions/Communication/Serial/availableForWrite
+    ///
+    /// Get the number of bytes (characters) available for writing in the serial buffer without blocking the write operation.
+    ///
+    /// - Returns: The number of bytes available to write.
+    @inlinable
+    @inline(__always)
+    public static func availableForWrite() -> UInt8 {
+        return Self.txBufferHead >= Self.txBufferTail
+            ? Self.SERIAL_TX_BUFFER_SIZE - 1 - Self.txBufferHead + Self.txBufferTail
+            : Self.txBufferTail - Self.txBufferHead - 1
+    }
+    
+    /// Arduino Reference: Language/Functions/Communication/Serial/peek
+    ///
+    /// Returns the next byte (character) of incoming serial data without removing it from the internal serial buffer.
+    /// That is, successive calls to `peek()` will return the same character, as will the next call to `read()`.
+    ///
+    /// - Returns: The first byte of incoming serial data available (or 255 if no data is available).
+    @inlinable
+    @inline(__always)
+    public static func peek() -> UInt8 {
+        return Self.rxBufferHead == Self.rxBufferTail
+            ? UInt8.max
+            : Self.rxBuffer[Int(Self.rxBufferTail)]
+    }
+    
+    @inlinable
+    @inline(__always)
+    public static func read() -> UInt8 {
+        guard Self.rxBufferHead != Self.rxBufferTail else { return UInt8.max }
+        
+        let character = Self.rxBuffer[Int(Self.rxBufferTail)]
+        Self.rxBufferTail = (Self.rxBufferTail + 1) % Self.SERIAL_RX_BUFFER_SIZE
+        
+        return character
+    }
+    
     /// Arduino Reference: Language/Functions/Communication/Serial/write
     ///
     /// Writes binary data to the serial port. This data is sent as a byte.
@@ -421,17 +471,15 @@ public struct Serial: Stream {
         Self.rxBufferHead = Self.rxBufferTail
     }
     
-    @usableFromInline
     @inline(never)
     @interruptHandler
     @_silgen_name("__vector_18")
-    internal static func receiveCompleteInterruptHandler() {}
+    public static func receiveCompleteInterruptHandler() {}
     
-    @usableFromInline
     @inline(never)
     @interruptHandler
     @_silgen_name("__vector_19")
-    internal static func dataRegisterEmptyInterruptHandler() {
+    public static func dataRegisterEmptyInterruptHandler() {
         let character: UInt8 = Self.txBuffer[Int(Self.txBufferTail)]
         Self.txBufferTail = (Self.txBufferTail + 1) % Self.SERIAL_TX_BUFFER_SIZE
         

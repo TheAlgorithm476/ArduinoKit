@@ -60,8 +60,8 @@ Support Status Legend:
 | Functions - Communication - SPI    | `setDataMode`           | ❌      |                                                                                         |
 | Functions - Communication - SPI    | `transfer`              | ❌      |                                                                                         |
 | Functions - Communication - SPI    | `usingInterrupt`        | ❌      |                                                                                         |
-| Functions - Communication - Serial | `available`             | ❌      |                                                                                         |
-| Functions - Communication - Serial | `availableForWrite`     | ❌      |                                                                                         |
+| Functions - Communication - Serial | `available`             | ✅      |                                                                                         |
+| Functions - Communication - Serial | `availableForWrite`     | ✅      |                                                                                         |
 | Functions - Communication - Serial | `begin`                 | ✅      |                                                                                         |
 | Functions - Communication - Serial | `end`                   | ✅      |                                                                                         |
 | Functions - Communication - Serial | `find`                  | ❌      |                                                                                         |
@@ -71,10 +71,10 @@ Support Status Legend:
 | Functions - Communication - Serial | `ifSerial`              | ❌      |                                                                                         |
 | Functions - Communication - Serial | `parseFloat`            | ❌      |                                                                                         |
 | Functions - Communication - Serial | `parseInt`              | ❌      |                                                                                         |
-| Functions - Communication - Serial | `peek`                  | ❌      |                                                                                         |
+| Functions - Communication - Serial | `peek`                  | ✅      |                                                                                         |
 | Functions - Communication - Serial | `print`                 | 🚧      | print currently only supports printing characters, strings, and numbers.                |
 | Functions - Communication - Serial | `println`               | 🚧      | println currently only supports printing characters, strings, and numbers.              |
-| Functions - Communication - Serial | `read`                  | ❌      |                                                                                         |
+| Functions - Communication - Serial | `read`                  | ✅      |                                                                                         |
 | Functions - Communication - Serial | `readBytes`             | ❌      |                                                                                         |
 | Functions - Communication - Serial | `readBytesUntil`        | ❌      |                                                                                         |
 | Functions - Communication - Serial | `readString`            | ❌      |                                                                                         |
