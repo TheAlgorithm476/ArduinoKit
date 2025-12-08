@@ -10,23 +10,6 @@ import CoreAVR
 // ArduinoKit Utility Functions
 // These functions aren't part of ArduinoKit itself, but abstract away some of the more complex logic used repeatedly, like Atomic operations, or Constant Size Buffers.
 
-/// Derived from: avr-libc/include/util/atomic.h - ATOMIC_BLOCK
-///
-/// Creates a block of code that is guaranteed to be executed atomically.
-/// Upon entering the block the Global Interrupt Status flag in SREG is disabled, and re-enabled upon exiting the block from any exit path.
-@inlinable
-@inline(__always)
-internal func atomic(block: () -> Void) {
-    if !cpuCore.globalInterruptEnable {
-        block()
-        return
-    }
-    
-    Interrupts.disableInterrupts()
-    block()
-    Interrupts.enableInterrupts()
-}
-
 /// Derived from: StackOverflow - https://stackoverflow.com/a/62735799
 ///
 /// Allocates a managed buffer with a fixed size.

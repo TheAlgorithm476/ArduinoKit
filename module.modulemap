@@ -1,0 +1,4 @@
+module ArduinoKit {
+	export *
+	link "ArduinoKit"
+}

@@ -28,7 +28,7 @@ public func initializeArduino() {
     
     // Set up Timer 2
     timer2.waveformGenerationMode = .phaseCorrectPWM
-    timer2.prescaler = .runningSixtyFour // TODO: Rename to .running64 once HALGEN merges
+    timer2.prescaler = .running64
     
     // Set up ADC
     adc.prescaler = .divide128
