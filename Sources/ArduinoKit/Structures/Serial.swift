@@ -485,7 +485,7 @@ public struct Serial: Stream {
         let index = (Self.rxBufferHead + 1) % Self.SERIAL_RX_BUFFER_SIZE
         
         if index != Self.rxBufferTail {
-            Self.rxBuffer[Self.rxBufferHead] = character
+            Self.rxBuffer[Int(Self.rxBufferHead)] = character
             Self.rxBufferHead = index
         }
     }
