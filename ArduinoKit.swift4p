@@ -1,5 +1,4 @@
 files:
-- main.swift
 - Sources/ArduinoKit/Functions/AnalogIO.swift
 - Sources/ArduinoKit/Functions/Bits.swift
 - Sources/ArduinoKit/Functions/Characters.swift
