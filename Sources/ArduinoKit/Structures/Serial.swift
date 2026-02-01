@@ -142,7 +142,7 @@ public struct Serial: Stream {
     @inlinable
     @inline(__always)
     @available(*, deprecated, message: "Use Serial.begin(speed: UInt32, config: SerialConfig) instead.")
-    public static func begin(baud: UInt32, config: UInt8 = SERIAL_8N1) {
+    public static func begin(_ baud: UInt32, _ config: UInt8 = SERIAL_8N1) {
         Self.begin(speed: baud, config: .init(rawValue: config) ?? .config8N1)
     }
     
@@ -362,7 +362,7 @@ public struct Serial: Stream {
     @inlinable
     @inline(__always)
     @available(*, deprecated, message: "Use Serial.print(Int32, NumberBase)")
-    public static func print(number: Int32, base: UInt8) -> UInt8 {
+    public static func print(_ number: Int32, _ base: UInt8) -> UInt8 {
         return Self.print(number: number, base: .init(rawValue: base) ?? .decimal)
     }
     
@@ -416,7 +416,7 @@ public struct Serial: Stream {
     @inlinable
     @inline(__always)
     @available(*, deprecated, message: "Use Serial.println(Int32, NumberBase)")
-    public static func println(number: Int32, base: UInt8) -> UInt8 {
+    public static func println(_ number: Int32, _ base: UInt8) -> UInt8 {
         let written = Self.print(number: number, base: .init(rawValue: base) ?? .decimal)
         return written + Self.write(character: 0x0A)
     }

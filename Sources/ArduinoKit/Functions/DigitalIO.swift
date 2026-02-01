@@ -75,7 +75,7 @@ internal func digitalPinToTimer(pin: DigitalPin) -> PinTimer {
 @inlinable
 @inline(__always)
 @available(*, deprecated, message: "Use `pinMode(pin: DigitalPin, mode: DataDirectionFlag)` instead.")
-public func pinMode(pin: UInt8, mode: UInt8) {
+public func pinMode(_ pin: UInt8, _ mode: UInt8) {
     guard pin < 20 else { return }
     guard mode < 0x02 else { return }
     
@@ -179,7 +179,7 @@ internal func disablePWM(for timer: PinTimer) {
 @inlinable
 @inline(__always)
 @available(*, deprecated, message: "Use `digitalWrite(pin: DigitalPin, value: DigitalValue)` instead.")
-public func digitalWrite(pin: UInt8, value: UInt8) {
+public func digitalWrite(_ pin: UInt8, _ value: UInt8) {
     guard pin < 20 else { return }
     guard value < 0x02 else { return }
     
@@ -233,7 +233,7 @@ public func digitalWrite(pin: DigitalPin, value: DigitalValue) {
 @inlinable
 @inline(__always)
 @available(*, deprecated, message: "Use `digitalRead(pin: DigitalPin) -> DigitalValue` instead.")
-public func digitalRead(pin: UInt8) -> UInt8 {
+public func digitalRead(_ pin: UInt8) -> UInt8 {
     guard pin < 20 else { return LOW }
     
     return digitalRead(pin: .init(rawValue: pin)!) == .high ? HIGH : LOW

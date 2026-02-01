@@ -17,7 +17,7 @@ private var next: UInt32 = 1
 /// - Parameters:
 /// - seed: non-zero number to initialize the pseudo-random sequence.
 @available(*, deprecated, message: "Use `random(seed: UInt32, max: UInt32, min: UInt32)` instead.")
-public func randomSeed(seed: UInt32) {
+public func randomSeed(_ seed: UInt32) {
     if seed != 0 {
         next = seed
     }

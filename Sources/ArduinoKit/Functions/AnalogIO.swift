@@ -36,7 +36,7 @@ internal let analogReference: VoltageReference = .externalCapacitor
 @inlinable
 @inline(__always)
 @available(*, deprecated, message: "Use `analogRead(pin: AnalogPin)` instead.")
-public func analogRead(pin: UInt8) -> UInt16 { // TODO: Rewrite after ADC is properly and fully implemented
+public func analogRead(_ pin: UInt8) -> UInt16 { // TODO: Rewrite after ADC is properly and fully implemented
     guard pin < 20 else { return UInt16.max }
     
     let pin = pin <= 14 ? pin - 14 : pin
@@ -84,7 +84,7 @@ public func analogRead(pin: AnalogPin) -> UInt16 {
 @inlinable
 @inline(__always)
 @available(*, deprecated, message: "Use `analogWrite(pin: DigitalPin, value: UInt8)` instead.")
-public func analogWrite(pin: UInt8, value: UInt8) {
+public func analogWrite(_ pin: UInt8, _ value: UInt8) {
     guard pin < 20 else { return }
     
     analogWrite(pin: .init(rawValue: pin)!, value: value)

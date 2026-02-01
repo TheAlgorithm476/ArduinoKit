@@ -14,7 +14,7 @@
 /// - Returns: The value of the bit
 @inlinable
 @inline(__always)
-public func bit(n: UInt8) -> UInt32 {
+public func bit(_ n: UInt8) -> UInt32 {
     return 1 << n
 }
 
@@ -28,7 +28,7 @@ public func bit(n: UInt8) -> UInt32 {
 /// - Returns: The value of the variable after the bit is cleared.
 @inlinable
 @inline(__always)
-public func bitClear(value: UInt8, bit: UInt8) -> UInt8 {
+public func bitClear(_ value: UInt8, _ bit: UInt8) -> UInt8 {
     return value & ~(1 << bit)
 }
 
@@ -42,7 +42,7 @@ public func bitClear(value: UInt8, bit: UInt8) -> UInt8 {
 /// - Returns: `true` if the bit is 1, `false` otherwise.
 @inlinable
 @inline(__always)
-public func bitRead(value: UInt8, bit: UInt8) -> Bool {
+public func bitRead(_ value: UInt8, _ bit: UInt8) -> Bool {
     return (value >> bit) & 0b00000001 == 1
 }
 
@@ -56,7 +56,7 @@ public func bitRead(value: UInt8, bit: UInt8) -> Bool {
 /// - Returns: The value of the variable after the bit is set.
 @inlinable
 @inline(__always)
-public func bitSet(value: UInt8, bit: UInt8) -> UInt8 {
+public func bitSet(_ value: UInt8, _ bit: UInt8) -> UInt8 {
     return value | (1 << bit)
 }
 
@@ -71,8 +71,8 @@ public func bitSet(value: UInt8, bit: UInt8) -> UInt8 {
 /// - Returns: The value of the variable after the bit is written.
 @inlinable
 @inline(__always)
-public func bitWrite(number: UInt8, bit: UInt8, value: Bool) -> UInt8 {
-    return value ? bitSet(value: number, bit: bit) : bitClear(value: number, bit: bit)
+public func bitWrite(_ number: UInt8, _ bit: UInt8, _ value: Bool) -> UInt8 {
+    return value ? bitSet(number, bit) : bitClear(number, bit)
 }
 
 /// Arduino Reference: Language/Functions/Bits and Bytes/highByte
@@ -84,7 +84,7 @@ public func bitWrite(number: UInt8, bit: UInt8, value: Bool) -> UInt8 {
 /// - Returns: The high byte.
 @inlinable
 @inline(__always)
-public func highByte<T: BinaryInteger>(value: T) -> UInt8 {
+public func highByte<T: BinaryInteger>(_ value: T) -> UInt8 {
     return UInt8(value >> (value.bitWidth - 8))
 }
 
@@ -97,6 +97,6 @@ public func highByte<T: BinaryInteger>(value: T) -> UInt8 {
 /// - Returns: The low byte.
 @inlinable
 @inline(__always)
-public func lowByte<T: BinaryInteger>(value: T) -> UInt8 {
+public func lowByte<T: BinaryInteger>(_ value: T) -> UInt8 {
     return UInt8(value & 0b11111111)
 }

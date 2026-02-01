@@ -14,7 +14,7 @@
 /// - Returns: `x` if `x` is greater than 0, `-x` otherwise.
 @inlinable
 @inline(__always)
-public func abs<T: SignedNumeric>(x: T) -> T {
+public func abs<T: SignedNumeric>(_ x: T) -> T {
     return x > 0 ? x : -x
 }
 
@@ -29,7 +29,7 @@ public func abs<T: SignedNumeric>(x: T) -> T {
 /// - Returns: If amount if lower than `min`: min; if higher than `max`: max; `amount` otherwise.
 @inlinable
 @inline(__always)
-public func constrain<T: Comparable>(amount: T, min: T, max: T) -> T {
+public func constrain<T: Comparable>(_ amount: T, _ min: T, _ max: T) -> T {
     return (amount < min) ? min : ((amount > max) ? max : amount)
 }
 
@@ -48,7 +48,7 @@ public func constrain<T: Comparable>(amount: T, min: T, max: T) -> T {
 /// - Returns: The mapped value.
 @inlinable
 @inline(__always)
-public func map<T: BinaryInteger>(input: T, minInput: T, maxInput: T, minOutput: T, maxOutput: T) -> T {
+public func map<T: BinaryInteger>(_ input: T, _ minInput: T, _ maxInput: T, _ minOutput: T, _ maxOutput: T) -> T {
     return (input - minInput) * (maxOutput - minOutput) / (maxInput - minInput) + minOutput
 }
 
@@ -67,7 +67,7 @@ public func map<T: BinaryInteger>(input: T, minInput: T, maxInput: T, minOutput:
 /// - Returns: The mapped value.
 @inlinable
 @inline(__always)
-public func map<T: FloatingPoint>(input: T, minInput: T, maxInput: T, minOutput: T, maxOutput: T) -> T {
+public func map<T: FloatingPoint>(_ input: T, _ minInput: T, _ maxInput: T, _ minOutput: T, _ maxOutput: T) -> T {
     return (input - minInput) * (maxOutput - minOutput) / (maxInput - minInput) + minOutput
 }
 
@@ -81,7 +81,7 @@ public func map<T: FloatingPoint>(input: T, minInput: T, maxInput: T, minOutput:
 /// - Returns: The smaller of the 2 values
 @inlinable
 @inline(__always)
-public func min<T: Comparable>(a: T, b: T) -> T {
+public func min<T: Comparable>(_ a: T, _ b: T) -> T {
     return (a < b) ? a : b;
 }
 
@@ -95,7 +95,7 @@ public func min<T: Comparable>(a: T, b: T) -> T {
 /// - Returns: The larger of the 2 values
 @inlinable
 @inline(__always)
-public func max<T: Comparable>(a: T, b: T) -> T {
+public func max<T: Comparable>(_ a: T, _ b: T) -> T {
     return (b < a) ? a : b;
 }
 
@@ -110,7 +110,7 @@ public func max<T: Comparable>(a: T, b: T) -> T {
 /// - Returns: The square of the number.
 @inlinable
 @inline(__always)
-public func sq<T: Numeric>(x: T) -> T {
+public func sq<T: Numeric>(_ x: T) -> T {
     return x * x
 }
 
