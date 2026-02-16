@@ -157,3 +157,6 @@ Support Status Legend:
 | Variables - Constants              | `highLow`               | ✅      | Available in CoreAVR as `DigitalValue`                                                  |
 | Variables - Constants              | `inputOutputPullup`     | ✅      | Partially available in CoreAVR as `DataDirectionFlag`                                   |
 | Variables - Constants              | `LED_BUILTIN`           | ✅      | Deprecated. Use the `builtinLed`-constant instead.                                      |
+
+## Interrupt-driven functionality
+Due to the way Interrupts are currently implemented on the S4A platform, every project using ArduinoKit should include the `AK_Interrupts.swift` file from this repository somewhere in their project. This file is responsible for linking ArduinoKit functionality depending on Interrupt functionality correctly into the chip's Vector table.

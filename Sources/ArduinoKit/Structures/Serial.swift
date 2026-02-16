@@ -471,9 +471,8 @@ public struct Serial: Stream {
         Self.rxBufferHead = Self.rxBufferTail
     }
     
-    @inline(never)
-    @interruptHandler
-    @_silgen_name("__vector_18")
+    @inlinable
+    @inline(always)
     public static func receiveCompleteInterruptHandler() {
         if uart0.parityError {
             // Read byte and discard it.
@@ -490,9 +489,8 @@ public struct Serial: Stream {
         }
     }
     
-    @inline(never)
-    @interruptHandler
-    @_silgen_name("__vector_19")
+    @inlinable
+    @inline(always)
     public static func dataRegisterEmptyInterruptHandler() {
         let character: UInt8 = Self.txBuffer[Int(Self.txBufferTail)]
         Self.txBufferTail = (Self.txBufferTail + 1) % Self.SERIAL_TX_BUFFER_SIZE

@@ -106,10 +106,9 @@ public func delay(millis: UInt32) {
     }
 }
 
-@inline(never)
-@interruptHandler
-@_silgen_name("__vector_16")
-internal func timer0OverflowInterruptHandler() {
+@inlinable
+@inline(always)
+public func timer0OverflowInterruptHandler() {
     var millis = timer0Millis[0]
     var fract = timer0Fract[0]
     
