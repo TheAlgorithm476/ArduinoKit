@@ -7,37 +7,29 @@
 
 import CoreAVR
 
-// Timer0 ticks every 64 clock cycles with the current prescaler setting, and the overflow handler is called every 256 ticks.
-internal let MICROSECONDS_PER_TIMER0_OVERFLOW = clockCyclesToMicroseconds(64 * 256)
-
-// The (whole) number of milliseconds per Timer0 overflow
-internal let MILLIS_INC = MICROSECONDS_PER_TIMER0_OVERFLOW / 1000
-
-// The (fractional) number of milliseconds per Timer0 overflow.
-// Shifted right by 3 to fit into a UInt8.
-internal let FRACT_INC = UInt8((MICROSECONDS_PER_TIMER0_OVERFLOW % 1000) >> 3)
-internal let FRACT_MAX = UInt8(125) // (1000 >> 3)
-
-@usableFromInline
-internal var timer0OverflowCount = ConstantSizeBuffer<UInt32>.init(count: 1, repeating: 0)
-@usableFromInline
-internal var timer0Millis = ConstantSizeBuffer<UInt32>.init(count: 1, repeating: 0)
-internal var timer0Fract = ConstantSizeBuffer<UInt8>.init(count: 1, repeating: 0)
-
-@usableFromInline
-internal let CLOCK_CYCLES_PER_MICROSECOND = UInt32(cpuFrequency / 1000000)
+// MARK: Utilities
+@inlinable
+@inline(always)
+internal func clockCyclesPerMicrosecond() -> UInt32 {
+    return UInt32(cpuFrequency) / 1000000
+}
 
 @inlinable
-@inline(__always)
+@inline(always)
 internal func clockCyclesToMicroseconds(_ cycles: UInt32) -> UInt32 {
-    return cycles / CLOCK_CYCLES_PER_MICROSECOND
+    return cycles / clockCyclesPerMicrosecond()
 }
 
-@inlinable
-@inline(__always)
-internal func microsecondsToClockCycles(_ micros: UInt32) -> UInt32 {
-    return micros * CLOCK_CYCLES_PER_MICROSECOND
-}
+// MARK: Timings
+private let MICROSECONDS_PER_TIMER0_OVERFLOW = clockCyclesToMicroseconds(64 * 256)
+private let MILLIS_INC = MICROSECONDS_PER_TIMER0_OVERFLOW / 1000
+
+private let FRACT_INC = (MICROSECONDS_PER_TIMER0_OVERFLOW % 1000) >> 3
+private let FRACT_MAX = 1000 >> 3
+
+internal var timer0OverflowCount: UInt32 = 0
+internal var timer0Millis: UInt32 = 0
+internal var timer0Fract: UInt8 = 0
 
 /// Arduino Reference: Language/Functions/Time/micros
 ///
@@ -48,14 +40,12 @@ internal func microsecondsToClockCycles(_ micros: UInt32) -> UInt32 {
 /// On 8 MHz Arduino boards (e.g. the LilyPad), this function has a resolution of eight microseconds.
 ///
 /// - Returns: The number of microseconds since the Arduino board began running the current program.
-@inlinable
-@inline(__always)
 public func micros() -> UInt32 {
     let statusRegister = cpuCore.statusRegister
     
     Interrupts.disableInterrupts()
     
-    var overflowCount = timer0OverflowCount[0]
+    var overflowCount = timer0OverflowCount
     let timer = timer0.count
     
     if timer0.overflowFlag {
@@ -63,7 +53,7 @@ public func micros() -> UInt32 {
     }
     
     cpuCore.statusRegister = statusRegister
-    return ((overflowCount << 8) + UInt32(timer)) * (64 / CLOCK_CYCLES_PER_MICROSECOND)
+    return ((overflowCount << 8) + UInt32(timer)) * (64 / clockCyclesPerMicrosecond())
 }
 
 /// Arduino Reference: Language/Functions/Time/millis
@@ -72,14 +62,12 @@ public func micros() -> UInt32 {
 /// This number will overflow (go back to zero), after approximately 50 days.
 ///
 /// - Returns: The number of milliseconds since the Arduino board began running the current program
-@inlinable
-@inline(__always)
 public func millis() -> UInt32 {
     let statusRegister = cpuCore.statusRegister
     
     Interrupts.disableInterrupts()
     
-    let millis = timer0Millis[0]
+    let millis = timer0Millis
     cpuCore.statusRegister = statusRegister
     
     return millis
@@ -91,34 +79,36 @@ public func millis() -> UInt32 {
 ///
 /// - Parameters:
 /// - millis: The number of milliseconds to pause.
-@inlinable
-@inline(__always)
 public func delay(millis: UInt32) {
-    var millis = millis
+    var ms = millis
     var start = micros()
     
-    while millis > 0 {
+    while ms > 0 {
         // yield()
-        while millis > 0 && (micros() - start) >= 1000 {
-            millis -= 1
+        while ms > 0 && (micros() - start) >= 1000 {
+            ms -= 1
             start += 1000
         }
     }
 }
 
 internal func timer0OverflowInterruptHandler() {
-    var millis = timer0Millis[0]
-    var fract = timer0Fract[0]
+    // Ensure the values are read by explicitly copying them
+    var millis = timer0Millis
+    var fract = timer0Fract
+    var count = timer0OverflowCount
     
     millis += MILLIS_INC
-    fract += FRACT_INC
+    fract += UInt8(FRACT_INC)
     
     if fract >= FRACT_MAX {
-        fract -= FRACT_MAX
+        fract -= UInt8(FRACT_MAX)
         millis += 1
     }
     
-    timer0Fract[0] = fract
-    timer0Millis[0] = millis
-    timer0OverflowCount[0] = timer0OverflowCount[0] + 1
+    count += 1
+    
+    timer0Fract = fract
+    timer0Millis = millis
+    timer0OverflowCount = count
 }
