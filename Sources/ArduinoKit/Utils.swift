@@ -41,3 +41,21 @@ internal struct ConstantSizeBuffer<T>: ~Copyable {
         }
     }
 }
+
+// TODO: This thing is not type-safe in the slightest.
+internal struct Volatile<T> {
+    private var memory: UnsafeMutableRawPointer
+    
+    public init(initialValue: T, objectSize: Int) {
+        self.memory = UnsafeMutableRawPointer.allocate(byteCount: objectSize, alignment: 1)!
+        memory.storeBytes(of: initialValue, as: T.self)
+    }
+    
+    public func get() -> T {
+        return memory.load(as: T.self)
+    }
+    
+    public func set(newValue: T) {
+        memory.storeBytes(of: newValue, as: T.self)
+    }
+}

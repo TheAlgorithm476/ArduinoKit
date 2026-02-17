@@ -27,9 +27,9 @@ private let MILLIS_INC = MICROSECONDS_PER_TIMER0_OVERFLOW / 1000
 private let FRACT_INC = (MICROSECONDS_PER_TIMER0_OVERFLOW % 1000) >> 3
 private let FRACT_MAX = 1000 >> 3
 
-internal var timer0OverflowCount: UInt32 = 0
-internal var timer0Millis: UInt32 = 0
-internal var timer0Fract: UInt8 = 0
+internal let timer0OverflowCount = Volatile<UInt32>(initialValue: 0, objectSize: 4)
+internal let timer0Millis = Volatile<UInt32>(initialValue: 0, objectSize: 4)
+internal var timer0Fract = Volatile<UInt8>(initialValue: 0, objectSize: 1)
 
 /// Arduino Reference: Language/Functions/Time/micros
 ///
@@ -45,7 +45,7 @@ public func micros() -> UInt32 {
     
     Interrupts.disableInterrupts()
     
-    var overflowCount = timer0OverflowCount
+    var overflowCount = timer0OverflowCount.get()
     let timer = timer0.count
     
     if timer0.overflowFlag {
@@ -67,7 +67,7 @@ public func millis() -> UInt32 {
     
     Interrupts.disableInterrupts()
     
-    let millis = timer0Millis
+    let millis = timer0Millis.get()
     cpuCore.statusRegister = statusRegister
     
     return millis
@@ -94,9 +94,9 @@ public func delay(millis: UInt32) {
 
 internal func timer0OverflowInterruptHandler() {
     // Ensure the values are read by explicitly copying them
-    var millis = timer0Millis
-    var fract = timer0Fract
-    var count = timer0OverflowCount
+    var millis = timer0Millis.get()
+    var fract = timer0Fract.get()
+    var count = timer0OverflowCount.get()
     
     millis += MILLIS_INC
     fract += UInt8(FRACT_INC)
@@ -108,7 +108,7 @@ internal func timer0OverflowInterruptHandler() {
     
     count += 1
     
-    timer0Fract = fract
-    timer0Millis = millis
-    timer0OverflowCount = count
+    timer0Fract.set(newValue: fract)
+    timer0Millis.set(newValue: millis)
+    timer0OverflowCount.set(newValue: count)
 }
