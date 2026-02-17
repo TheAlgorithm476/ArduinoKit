@@ -8,7 +8,7 @@ let package = Package(
         .library(name: "ArduinoKit", targets: [ "ArduinoKit" ])
     ],
     dependencies: [
-        .package(url: "https://github.com/pdshelley/CoreAVR.git", branch: "develop"),
+        .package(url: "https://github.com/pdshelley/CoreAVR.git", branch: "bugfix/uart-access-modifiers"),
     ],
     targets: [
         .target(name: "ArduinoKit", dependencies: [

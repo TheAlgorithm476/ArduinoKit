@@ -36,5 +36,5 @@ public func initializeArduino() {
     
     // TODO: Improve this logic, just clearing the register is not something I'd like to "just do".
     // Disconnect UART for use in Digital IO (Serial.begin will re-enable them)
-    uart0.USARTControlAndStatusRegisterB = 0
+    uart0.controlRegisterB = 0
 }

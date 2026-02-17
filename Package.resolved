@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pdshelley/CoreAVR.git",
       "state" : {
-        "branch" : "develop",
-        "revision" : "e7fdb3f5e2f029ae20ac6c879e1834daaa510536"
+        "branch" : "bugfix/uart-access-modifiers",
+        "revision" : "1a1b9b42bcc87f3db29804bb79c92b87016bc6d9"
       }
     }
   ],

@@ -12,6 +12,7 @@ files:
 - Sources/ArduinoKit/Structures/Stream.swift
 - Sources/ArduinoKit/Constants.swift
 - Sources/ArduinoKit/init.swift
+- Sources/ArduinoKit/InterruptHook.swift
 - Sources/ArduinoKit/Utils.swift
 - Package.swift
 settings:

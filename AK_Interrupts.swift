@@ -16,19 +16,19 @@ import ArduinoKit
 @interruptHandler
 @_silgen_name("__vector_16")
 func AK_Interrupt16() {
-    timer0OverflowInterruptHandler()
+    vector16()
 }
 
 @inline(never)
 @interruptHandler
 @_silgen_name("__vector_18")
 func AK_Interrupt18() {
-    Serial.receiveCompleteInterruptHandler()
+    vector18()
 }
 
 @inline(never)
 @interruptHandler
 @_silgen_name("__vector_19")
 func AK_Interrupt19() {
-    Serial.dataRegisterEmptyInterruptHandler()
+    vector19()
 }

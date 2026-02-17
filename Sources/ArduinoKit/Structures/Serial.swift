@@ -168,7 +168,7 @@ public struct Serial: Stream {
         
         Self.written = false
         
-        uart0.USARTControlAndStatusRegisterC = config.rawValue
+        uart0.controlRegisterC = config.rawValue
         
         uart0.receiverEnable = .on
         uart0.transmitterEnable = .on
@@ -239,7 +239,7 @@ public struct Serial: Stream {
         
         if Self.txBufferHead == Self.txBufferTail && uart0.dataRegisterEmpty {
             atomic {
-                uart0.USARTIODataRegister = character
+                uart0.dataRegister = character
                 
                 uart0.asynchronousDoubleSpeedMode = .on
                 uart0.txComplete = true
@@ -471,16 +471,14 @@ public struct Serial: Stream {
         Self.rxBufferHead = Self.rxBufferTail
     }
     
-    @inlinable
-    @inline(always)
-    public static func receiveCompleteInterruptHandler() {
+    internal static func receiveCompleteInterruptHandler() {
         if uart0.parityError {
             // Read byte and discard it.
-            let _ = uart0.USARTIODataRegister
+            let _ = uart0.dataRegister
             return
         }
         
-        let character = uart0.USARTIODataRegister
+        let character = uart0.dataRegister
         let index = (Self.rxBufferHead + 1) % Self.SERIAL_RX_BUFFER_SIZE
         
         if index != Self.rxBufferTail {
@@ -489,13 +487,12 @@ public struct Serial: Stream {
         }
     }
     
-    @inlinable
-    @inline(always)
-    public static func dataRegisterEmptyInterruptHandler() {
+    @usableFromInline
+    internal static func dataRegisterEmptyInterruptHandler() {
         let character: UInt8 = Self.txBuffer[Int(Self.txBufferTail)]
         Self.txBufferTail = (Self.txBufferTail + 1) % Self.SERIAL_TX_BUFFER_SIZE
         
-        uart0.USARTIODataRegister = character
+        uart0.dataRegister = character
         uart0.asynchronousDoubleSpeedMode = .on
         uart0.txComplete = true
         
