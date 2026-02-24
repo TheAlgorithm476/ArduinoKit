@@ -72,8 +72,6 @@ internal func digitalPinToTimer(pin: DigitalPin) -> PinTimer {
 /// - Parameters:
 /// - pin: The pin number to set the mode of.
 /// - mode: `INPUT`, `OUTPUT`, or `INPUT_PULLUP`.
-@inlinable
-@inline(__always)
 @available(*, deprecated, message: "Use `pinMode(pin: DigitalPin, mode: DataDirectionFlag)` instead.")
 public func pinMode(_ pin: UInt8, _ mode: UInt8) {
     guard pin < 20 else { return }
@@ -95,8 +93,6 @@ public func pinMode(_ pin: UInt8, _ mode: UInt8) {
 /// - Parameters:
 /// - analogPin: The pin number to set the mode of.
 /// - mode: The data direction flag (e.g. `.input`, `.output`)
-@inlinable
-@inline(__always)
 public func pinMode(analogPin: AnalogPin, mode: DataDirectionFlag) {
     switch analogPin {
         case .analog0: GPIO.pc0.setDataDirection(mode)
@@ -115,8 +111,6 @@ public func pinMode(analogPin: AnalogPin, mode: DataDirectionFlag) {
 /// - Parameters:
 /// - pin: The pin number to set the mode of.
 /// - mode: The data direction flag (e.g. `.input`, `.output`)
-@inlinable
-@inline(__always)
 public func pinMode(pin: DigitalPin, mode: DataDirectionFlag) {
     switch pin {
         case .pin0:  GPIO.pd0.setDataDirection(mode)
@@ -176,8 +170,6 @@ internal func disablePWM(for timer: PinTimer) {
 /// - Parameters:
 /// - pin: The pin number
 /// - value: `HIGH` or `LOW`
-@inlinable
-@inline(__always)
 @available(*, deprecated, message: "Use `digitalWrite(pin: DigitalPin, value: DigitalValue)` instead.")
 public func digitalWrite(_ pin: UInt8, _ value: UInt8) {
     guard pin < 20 else { return }
@@ -191,8 +183,6 @@ public func digitalWrite(_ pin: UInt8, _ value: UInt8) {
 /// - Parameters:
 /// - pin: The digital pin
 /// - value: `.high` or `.low`
-@inlinable
-@inline(__always)
 public func digitalWrite(pin: DigitalPin, value: DigitalValue) {
     let timer = digitalPinToTimer(pin: pin)
     
@@ -230,8 +220,6 @@ public func digitalWrite(pin: DigitalPin, value: DigitalValue) {
 /// - Parameters:
 /// - pin: The pin number you want to read
 /// - Returns: `HIGH` or `LOW`.
-@inlinable
-@inline(__always)
 @available(*, deprecated, message: "Use `digitalRead(pin: DigitalPin) -> DigitalValue` instead.")
 public func digitalRead(_ pin: UInt8) -> UInt8 {
     guard pin < 20 else { return LOW }
@@ -244,8 +232,6 @@ public func digitalRead(_ pin: UInt8) -> UInt8 {
 /// - Parameters:
 /// - pin: The digital pin
 /// - Returns: `.high` or `.low`
-@inlinable
-@inline(__always)
 public func digitalRead(pin: DigitalPin) -> DigitalValue {
     let timer = digitalPinToTimer(pin: pin)
     

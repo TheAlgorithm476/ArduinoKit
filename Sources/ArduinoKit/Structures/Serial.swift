@@ -86,7 +86,7 @@ public enum SerialConfig: UInt8 {
 /// Arduino Reference: Language/Functions/Communication/Serial
 ///
 /// Used for communcation between the Arduino board and a computer or other devices. All Arduino board have at least one serial port (also known as a UART or USART), and some have several.
-///
+///```
 /// |           Board            |  Serial Pins   |    Serial1 pins    |    Serial2 pins    |    Serial3 pins    |    Serial4 pins    |
 /// |----------------------------|----------------|--------------------|--------------------|--------------------|--------------------|
 /// | UNO R3, UNO R3 SMD Mini    | 0 (RX), 1 (TX) |                    |                    |                    |                    |
@@ -102,32 +102,23 @@ public enum SerialConfig: UInt8 {
 /// | Nano 33 IoT                |                | 0 (RX0), 1 (TX0)   |                    |                    |                    |
 /// | Nano RP2040 Connect        |                | 0 (RX0), 1 (TX0)   |                    |                    |                    |
 /// | Nano BLE / BLE Sense       |                | 0 (RX0), 1 (TX0)   |                    |                    |                    |
-///
+///```
 /// On older boards (Uno, Nano, Mini, and Mega), pins 0 and 1 are used for communication with the computer. Connecting anything to those pins can interfere with that communication, including causing failed uploads to the board.
 ///
 /// Serial communication on pins TX/RX uses TTL logic levels (5V or 3.3V depending on the board). Don't connect these pins directly to an RS232 serial port; they operate at +/- 12V and can damage your Arduino board.
 ///
 /// To use these extra serial ports to communicate with your personal computer, you will need an additional USB-to-serial adapter, as they are not connected to the Mega's USB-to-serial adapter. To use them to communicate with an external TTL serial device, connect the TX pin to your device's RX pin, the RX to your device's TX pin, and the ground of your Mega to your device's ground.
 public struct Serial: Stream {
-    @usableFromInline
     internal static let SERIAL_TX_BUFFER_SIZE: UInt8 = 64
-    @usableFromInline
     internal static let SERIAL_RX_BUFFER_SIZE: UInt8 = 64
     
-    @usableFromInline
     internal static var written: Bool = false // Has any byte been written to UART since `begin()`?
-    @usableFromInline
     internal static var txBufferHead: UInt8 = 0
-    @usableFromInline
     internal static var txBufferTail: UInt8 = 0
-    @usableFromInline
     internal static var rxBufferHead: UInt8 = 0
-    @usableFromInline
     internal static var rxBufferTail: UInt8 = 0
     
-    @usableFromInline
     internal static var txBuffer = ConstantSizeBuffer<UInt8>(count: Int(SERIAL_TX_BUFFER_SIZE), repeating: 0)
-    @usableFromInline
     internal static var rxBuffer = ConstantSizeBuffer<UInt8>(count: Int(SERIAL_RX_BUFFER_SIZE), repeating: 0)
     
     /// Arduino Reference: Language/Functions/Communication/Serial/begin
@@ -139,8 +130,6 @@ public struct Serial: Stream {
     /// - Parameters:
     /// - speed: The data rate in bits per second
     /// - config: Sets data, parity, and stop bits.
-    @inlinable
-    @inline(__always)
     @available(*, deprecated, message: "Use Serial.begin(speed: UInt32, config: SerialConfig) instead.")
     public static func begin(_ baud: UInt32, _ config: UInt8 = SERIAL_8N1) {
         Self.begin(speed: baud, config: .init(rawValue: config) ?? .config8N1)
@@ -153,8 +142,6 @@ public struct Serial: Stream {
     /// - Parameters:
     /// - speed: The data rate in bits per second
     /// - config: Sets data, parity, and stop bits.
-    @inlinable
-    @inline(__always)
     public static func begin(speed: UInt32 = 57600, config: SerialConfig = .config8N1) {
         var baudSetting: UInt16 = UInt16((UInt32(cpuFrequency) / 4 / speed - 1) / 2)
         uart0.asynchronousDoubleSpeedMode = .on
@@ -182,8 +169,6 @@ public struct Serial: Stream {
     /// This is data that’s already arrived and stored in the serial receive buffer (which holds 64 bytes).
     ///
     /// - Returns: The number of bytes available to read.
-    @inlinable
-    @inline(__always)
     public static func available() -> UInt8 {
         return (Self.SERIAL_RX_BUFFER_SIZE + Self.rxBufferHead - Self.rxBufferTail) % Self.SERIAL_RX_BUFFER_SIZE
     }
@@ -193,8 +178,6 @@ public struct Serial: Stream {
     /// Get the number of bytes (characters) available for writing in the serial buffer without blocking the write operation.
     ///
     /// - Returns: The number of bytes available to write.
-    @inlinable
-    @inline(__always)
     public static func availableForWrite() -> UInt8 {
         return Self.txBufferHead >= Self.txBufferTail
             ? Self.SERIAL_TX_BUFFER_SIZE - 1 - Self.txBufferHead + Self.txBufferTail
@@ -207,16 +190,12 @@ public struct Serial: Stream {
     /// That is, successive calls to `peek()` will return the same character, as will the next call to `read()`.
     ///
     /// - Returns: The first byte of incoming serial data available (or 255 if no data is available).
-    @inlinable
-    @inline(__always)
     public static func peek() -> UInt8 {
         return Self.rxBufferHead == Self.rxBufferTail
             ? UInt8.max
             : Self.rxBuffer[Int(Self.rxBufferTail)]
     }
     
-    @inlinable
-    @inline(__always)
     public static func read() -> UInt8 {
         guard Self.rxBufferHead != Self.rxBufferTail else { return UInt8.max }
         
@@ -233,7 +212,6 @@ public struct Serial: Stream {
     /// - Parameters:
     /// - character: The ASCII Character to write to the Serial Port.
     @discardableResult
-    @inline(never)
     public static func write(character: UInt8) -> UInt8 {
         Self.written = true
         
@@ -276,8 +254,6 @@ public struct Serial: Stream {
     /// - buffer: The buffer to write to the Serial Port.
     /// - Returns: The amount of bytes written to Serial.
     @discardableResult
-    @inlinable
-    @inline(__always)
     public static func write(buffer: Array<UInt8>) -> UInt8 {
         var sent: UInt8 = 0
         for byte in buffer {
@@ -297,8 +273,6 @@ public struct Serial: Stream {
     /// - string: The buffer to write to the Serial Port.
     /// - Returns: The amount of bytes written to Serial.
     @discardableResult
-    @inlinable
-    @inline(__always)
     public static func write(string: StaticString) -> UInt8 {
         var sent: UInt8 = 0
         for character in string {
@@ -322,8 +296,6 @@ public struct Serial: Stream {
     /// - string: The string to print to Serial
     /// - Returns: The amount of bytes written to Serial.
     @discardableResult
-    @inlinable
-    @inline(__always)
     public static func print(_ string: StaticString) -> UInt8 {
         return Self.write(string: string)
     }
@@ -340,8 +312,6 @@ public struct Serial: Stream {
     /// - character: The character to print to Serial
     /// - Returns: The amount of bytes written to Serial.
     @discardableResult
-    @inlinable
-    @inline(__always)
     public static func print(character: UInt8) -> UInt8 {
         return Self.write(character: character)
     }
@@ -359,8 +329,6 @@ public struct Serial: Stream {
     /// - base: The base of the number being printed (e.g. DEC, HEX, BIN, etc..)
     /// - Returns: The amount of bytes written to Serial.
     @discardableResult
-    @inlinable
-    @inline(__always)
     @available(*, deprecated, message: "Use Serial.print(Int32, NumberBase)")
     public static func print(_ number: Int32, _ base: UInt8) -> UInt8 {
         return Self.print(number: number, base: .init(rawValue: base) ?? .decimal)
@@ -375,8 +343,6 @@ public struct Serial: Stream {
     /// - base: The NumberBase of the number being printed (e.g. .decimal, .octal, ...)
     /// - Returns: The amount of bytes written to Serial.
     @discardableResult
-    @inlinable
-    @inline(__always)
     public static func print(number: Int32, base: NumberBase) -> UInt8 {
         if number < 0 && base == .decimal {
             let dash = Self.print("-")
@@ -396,8 +362,6 @@ public struct Serial: Stream {
     /// - string: The string to print to Serial
     /// - Returns: The amount of bytes written to Serial.
     @discardableResult
-    @inlinable
-    @inline(__always)
     public static func println(_ string: StaticString) -> UInt8 {
         let written = Self.write(string: string)
         return written + Self.write(character: 0x0A)
@@ -413,8 +377,6 @@ public struct Serial: Stream {
     /// - base: The NumberBase of the number being printed (e.g. .decimal, .octal, ...)
     /// - Returns: The amount of bytes written to Serial.
     @discardableResult
-    @inlinable
-    @inline(__always)
     @available(*, deprecated, message: "Use Serial.println(Int32, NumberBase)")
     public static func println(_ number: Int32, _ base: UInt8) -> UInt8 {
         let written = Self.print(number: number, base: .init(rawValue: base) ?? .decimal)
@@ -431,8 +393,6 @@ public struct Serial: Stream {
     /// - base: The NumberBase of the number being printed (e.g. .decimal, .octal, ...)
     /// - Returns: The amount of bytes written to Serial.
     @discardableResult
-    @inlinable
-    @inline(__always)
     public static func println(number: Int32, base: NumberBase) -> UInt8 {
         let written = Self.print(number: number, base: base)
         return written + Self.write(character: 0x0A)
@@ -441,8 +401,6 @@ public struct Serial: Stream {
     /// Arduino Reference: Language/Functions/Communication/Serial/flush
     ///
     /// Waits for the transmission of outgoing serial data to complete.
-    @inlinable
-    @inline(__always)
     public static func flush() {
         guard Self.written else { return } // Return early if we've never written data to Serial before.
         
@@ -458,8 +416,6 @@ public struct Serial: Stream {
     ///
     /// Disables serial communication, allowing the RX and TX pins to be used for general input and output.
     /// To re-enable serial communication, call Serial.begin().
-    @inlinable
-    @inline(__always)
     public static func end() {
         Self.flush()
         
@@ -487,7 +443,6 @@ public struct Serial: Stream {
         }
     }
     
-    @usableFromInline
     internal static func dataRegisterEmptyInterruptHandler() {
         let character: UInt8 = Self.txBuffer[Int(Self.txBufferTail)]
         Self.txBufferTail = (Self.txBufferTail + 1) % Self.SERIAL_TX_BUFFER_SIZE
@@ -503,8 +458,6 @@ public struct Serial: Stream {
     
     // TODO: Fix negative hex print.
     @discardableResult
-    @inlinable
-    @inline(__always)
     internal static func printNumber(number: Int32, base: NumberBase) -> UInt8 {
         var number: Int32 = number
         
@@ -523,8 +476,6 @@ public struct Serial: Stream {
     }
     
     @discardableResult
-    @inlinable
-    @inline(__always)
     internal static func write(buffer: borrowing ConstantSizeBuffer<UInt8>, ignoreZeroBytes: Bool = false) -> UInt8 {
         var sent: UInt8 = 0
         for i in 0..<buffer.count {

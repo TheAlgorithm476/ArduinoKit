@@ -33,8 +33,6 @@ internal let analogReference: VoltageReference = .externalCapacitor
 /// - Parameters:
 /// - pin: The pin to read an analog input from.
 /// - Returns: The analog reading on the pin.
-@inlinable
-@inline(__always)
 @available(*, deprecated, message: "Use `analogRead(pin: AnalogPin)` instead.")
 public func analogRead(_ pin: UInt8) -> UInt16 { // TODO: Rewrite after ADC is properly and fully implemented
     guard pin < 20 else { return UInt16.max }
@@ -57,8 +55,6 @@ public func analogRead(_ pin: UInt8) -> UInt16 { // TODO: Rewrite after ADC is p
 /// - Parameters:
 /// - pin: The pin to read an analog input from.
 /// - Returns: The analog reading on the pin.
-@inlinable
-@inline(__always)
 public func analogRead(pin: AnalogPin) -> UInt16 {
     adc.reference = analogReference
     adc.channel = .init(rawValue: pin.rawValue) ?? .gnd
@@ -81,8 +77,6 @@ public func analogRead(pin: AnalogPin) -> UInt16 {
 /// - Parameters:
 /// - pin: The pin to write to
 /// - value: the duty cycle between 0 and 255
-@inlinable
-@inline(__always)
 @available(*, deprecated, message: "Use `analogWrite(pin: DigitalPin, value: UInt8)` instead.")
 public func analogWrite(_ pin: UInt8, _ value: UInt8) {
     guard pin < 20 else { return }
@@ -101,8 +95,6 @@ public func analogWrite(_ pin: UInt8, _ value: UInt8) {
 /// - pin: The pin to write to
 /// - value: the duty cycle between 0 and 255
 // TODO: Should we rename `DigitalPin` to `Pin`?
-@inlinable
-@inline(__always)
 public func analogWrite(pin: DigitalPin, value: UInt8) {
     pinMode(pin: pin, mode: .output)
     
